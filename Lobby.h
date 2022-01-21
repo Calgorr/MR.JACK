@@ -1,6 +1,7 @@
 #ifndef LOBBY_H_INCLUDED
 #define LOBBY_H_INCLUDED
 #include "Character.h"
+#include "player.h"
 void setting();
 void change_color();
 void delay(float number_of_seconds);
@@ -8,7 +9,7 @@ void print_menu();
 static int Color_counter;
 void Welcome()
 {
-    char str[1000]="\n\n\n\n\n                           Welcome To MR.JACK\n                         Press Enter To Continue\n";
+    char str[1000]="Welcome To MR.JACK\nPress Enter To Continue\n";
     for(int i=0;i<strlen(str);i++)
     {
         printf("%c",str[i]);
@@ -22,17 +23,36 @@ void Welcome()
 }
 void print_menu()
 {
-    printf("\n\n\n\n\n                           1)Start A New Game\n");
-    printf("                           2)Load An Existing Game\n");
-    printf("                           3)Setings\n");
-    printf("                           4)Quit\n");
+    printf("1)Start A New Game\n");
+    printf("2)Load An Existing Game\n");
+    printf("3)Setings\n");
+    printf("4)Quit\n");
     int input;
     scanf("%d",&input);
     switch (input)
     {
         case 1:
             assign_character();
-            print_JACK();
+            //assign_map_struct();
+            //print_map();
+            printf("The First Player Is Going To Be : 1 For MR.JACK 2 For Detective\n");
+            int input;
+            scanf("%d",&input);
+            if(input==1)
+            {
+                player[0].jack=1;
+                player[0].detective=0;
+                player[1].jack=0;
+                player[1].detective=1;
+            }
+            else
+            {
+                player[0].jack=0;
+                player[0].detective=1;
+                player[1].jack=1;
+                player[1].detective=0;
+            }
+            player_j_random();
             break;
         case 2:
             break;
@@ -46,10 +66,10 @@ void print_menu()
 void setting()
 {
     system("cls");
-    printf("\n\n\n\n\n                           1)Delete All The Existing Maps\n");
-    printf("                           2)Stop The Song\n");
-    printf("                           3)Change The Color\n");
-    printf("                           4)Return Back to The Main Menu\n");
+    printf("1)Delete All The Existing Maps\n");
+    printf("2)Stop The Song\n");
+    printf("3)Change The Color\n");
+    printf("4)Return Back to The Main Menu\n");
     int input;
     scanf("%d",&input);
     switch (input)

@@ -7,19 +7,12 @@
 #include "Lobby.h"
 #include "Character.h"
 #include "Map.h"
-int count(int num);
+#include "Linked_List.h"
 int main()
 {
-    assign_map_struct();
+    assign_character();
+    assign_node();
     return 0;
 }
-int count(int num)
-{
-    int count1=0;
-    while(num!=0)
-    {
-        count1++;
-        num/=10;
-    }
-    return count1;
-}
+
+
