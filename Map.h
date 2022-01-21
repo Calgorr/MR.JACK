@@ -39,8 +39,10 @@ void print_map()
                 y=(y%10)*10+y/10;
                 if(strlen(board[x][y].sit)==1)
                     printf("%s  ",board[x][y].sit);
-                else
+                else if(strlen(board[x][y].sit)==2)
                     printf("%s ",board[x][y].sit);
+                else
+                    printf("%s",board[x][y].sit);
             }
             else
             {

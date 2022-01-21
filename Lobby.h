@@ -2,6 +2,7 @@
 #define LOBBY_H_INCLUDED
 #include "Character.h"
 #include "player.h"
+#include "Linked_List.h"
 void setting();
 void change_color();
 void delay(float number_of_seconds);
@@ -35,24 +36,10 @@ void print_menu()
             assign_character();
             //assign_map_struct();
             //print_map();
-            printf("The First Player Is Going To Be : 1 For MR.JACK 2 For Detective\n");
-            int input;
-            scanf("%d",&input);
-            if(input==1)
-            {
-                player[0].jack=1;
-                player[0].detective=0;
-                player[1].jack=0;
-                player[1].detective=1;
-            }
-            else
-            {
-                player[0].jack=0;
-                player[0].detective=1;
-                player[1].jack=1;
-                player[1].detective=0;
-            }
+            player_assign();
             player_j_random();
+            delay(2);
+            //assign_player();
             break;
         case 2:
             break;

@@ -8,10 +8,16 @@
 #include "Character.h"
 #include "Map.h"
 #include "Linked_List.h"
+#include "Game_Functions.h"
 int main()
 {
-    assign_character();
-    assign_node();
+    assign_map_struct();
+    print_map();
+    delay(5);
+    system("cls");
+    JS();
+    system("cls");
+    print_map();
     return 0;
 }
 

@@ -2,11 +2,13 @@
 #define LINKED_LIST_H_INCLUDED
 struct node * create_node(char name1[3],int movement1[2],char ability1_s[200]);
 void add_end(struct node * head,struct node * new_node);
-void delete_node(struct node ** phead,int i);
+void delete_node(struct node** phead, char str[3]);
 void assign_node();
 int check_array(int arr[],int i);
 int check_array2(int arr[],int i);
 void print_list(struct node * head);
+struct node * head1;
+struct node * head2;;
 struct node
 {
     char name[3];
@@ -29,8 +31,6 @@ void assign_node()
         }while(check_array(r,j));
         j++;
     }
-    struct node * head1;
-    struct node * head2;
     head1=create_node(character[r[0]].abrv,character[r[0]].movement,character[r[0]].ability_s);
     for(int i=1;i<=3;i++)
     {
@@ -85,23 +85,19 @@ void add_end(struct node * head,struct node * new_node)
     new_node->next=NULL;
 
 }
-void delete_node(struct node ** phead,int i)
+void delete_node(struct node** phead, char str[3])
 {
-    int index=1;
-    if(!i)
+    struct node *temp = *phead;
+    if (temp != NULL && !strcmp(temp->name,str))
     {
-        free(*phead);
+        *phead= temp->next;
+        free(temp);
         return;
     }
-    struct node *current=*phead;
-    if(i==1)
-        *phead=(*phead)->next;
-    else
-    {
-        while((++index)!=i)
-            current=current->next;
-        current->next=current->next->next;
-    }
+    while (temp != NULL && strcmp(temp->name,str))
+        temp = temp->next;
+
+    temp->next=temp->next->next;
 }
 int check_array2(int arr[],int i)
 {
@@ -115,9 +111,8 @@ void print_list(struct node * head)
     struct node * current=head;
     while(current!=NULL)
     {
-        printf("%s-",current->name);
+        printf("%s : 1)Move %d to %d houses , 2)%s\n",current->name,current->movement[0],current->movement[1],current->ability);
         current=current->next;
     }
-    printf("\n");
 }
 #endif // LINKED_LIST_H_INCLUDED
