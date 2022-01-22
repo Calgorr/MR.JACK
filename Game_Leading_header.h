@@ -7,7 +7,13 @@ static int cnt_fard;
 static int cnt_zoj;
 void round()
 {
-    if((round++)%2)
+    if (round>8)
+    {
+        system("cls");
+        printf("MR.JACK Won!!");
+        return;
+    }
+    else if((round++)%2)
         assign_player1();
     else if(!(round++))
         assign_player2()

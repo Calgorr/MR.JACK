@@ -11,13 +11,14 @@
 #include "Game_Functions.h"
 int main()
 {
-    assign_map_struct();
-    print_map();
+    //assign_map_struct();
+    /*print_map();
     delay(5);
     system("cls");
     JS();
     system("cls");
-    print_map();
+    print_map();*/
+    WG();
     return 0;
 }
 
