@@ -29,22 +29,39 @@ void player_assign()
                 player[1].detective=0;
             }
 }
+char jack_pile[7][4];
 void player_j_random()
 {
     system("cls");
     if(player[0].jack)
     {
+        int index=0;
         int i;
         srand(time(NULL));
         i=rand()%8;
         strcpy(player[0].jack_name,character[i].name);
+        for(int j=0;j<8;j++)
+        {
+            if(j==i)
+                continue;
+            strcpy(jack_pile[index],character[0].abrv[j]);
+            index++;
+        }
     }
     else
     {
+        int index;
         int i;
         srand(time(NULL));
         i=rand()%8;
         strcpy(player[1].jack_name,character[i].name);
+        for(int j=0;j<8;j++)
+        {
+            if(j==i)
+                continue;
+            strcpy(jack_pile[index],character[0].abrv[j]);
+            index++;
+        }
     }
 }
 #endif // PLAYER_H_INCLUDED

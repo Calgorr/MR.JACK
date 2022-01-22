@@ -18,7 +18,7 @@ int main()
     JS();
     system("cls");
     print_map();*/
-    WG();
+    JW();
     return 0;
 }
 

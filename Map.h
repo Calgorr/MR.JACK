@@ -3,6 +3,7 @@
 typedef struct
 {
     char sit[3];
+    int JW;
 }cell;
 cell board[9][13];
 void assign_map_struct()
