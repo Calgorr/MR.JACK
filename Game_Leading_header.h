@@ -3,6 +3,7 @@
 #include "Linked_List.h"
 #include "Character.h"
 #include "Game_Functions.h"
+void save();
 static int round1=1;
 static int cnt_fard;
 static int cnt_zoj;
@@ -17,20 +18,17 @@ void Round()
         printf("MR.JACK Won!!");
         return;
     }
+    if((s==5||s==1)&&round1>1)
+    {
+        int input;
+        printf("Would You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
+        scanf("%d",&input);
+        if(input)
+            save();
+    }
     if((s++)<5)
     {
         system("cls");
-        printf("Would You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
-        int input;
-        scanf("%d",&input);
-        if(input)
-        {
-            system("cls");
-            print_map();
-            printf("\n");
-            hidden();
-            not_guilty();
-        }
         printf("------------------------ROUND %d------------------------\n",round1);
         delay1(8.0);
         assign_player1();
@@ -39,17 +37,6 @@ void Round()
         round1++;
     else if((s++)<9)
     {
-        system("cls");
-        printf("Would You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
-        int input;
-        scanf("%d",&input);
-        if(input)
-        {
-            system("cls");
-            print_map();
-            printf("\n");
-            not_guilty();
-        }
         system("cls");
         printf("------------------------ROUND %d------------------------\n",round1);
         delay1(8.0);
@@ -64,6 +51,22 @@ void Round()
 void assign_player1()
 {
     system("cls");
+    if(round1>1)
+    {
+        system("cls");
+        print_map();
+        printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
+        int input;
+        scanf("%d",&input);
+        if(input)
+        {
+            system("cls");
+            print_map();
+            printf("\n");
+            not_guilty();
+        }
+        system("cls");
+    }
     print_map();
     if(cnt_fard%4==0||cnt_fard%4==3)
         printf("\nIt Is Detective's Turn\n");
@@ -142,6 +145,23 @@ void assign_player1()
 void assign_player2()
 {
     system("cls");
+    print_map();
+    if(round1>1)
+    {
+        system("cls");
+        print_map();
+        printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
+        int input;
+        scanf("%d",&input);
+        if(input)
+        {
+            system("cls");
+            print_map();
+            printf("\n");
+            not_guilty();
+        }
+        system("cls");
+    }
     print_map();
     if(cnt_zoj%4==0||cnt_zoj%4==3)
         printf("\nMR.JACK Should Choose His Card First\n");
@@ -243,5 +263,24 @@ void not_guilty()
     }
     delay1(15.0);
     system("cls");
+}
+void save()
+{
+    FILE * fpin;
+    fpin=fopen("saved_game.bin","wb");
+    fwrite(&round1,sizeof(int),1,fpin);
+    fwrite(&jack,sizeof(int),1,fpin);
+    fwrite(&s,sizeof(int),1,fpin);
+    fwrite(&cnt_zoj,sizeof(int),1,fpin);
+    fwrite(&cnt_fard,sizeof(int),1,fpin);
+    for(int i=0;i<9;i++)
+    {
+        for(int j=0;j<13;j++)
+            fwrite(&board[i][j],sizeof(board),1,fpin);
+    }
+    system("cls");
+    printf("-----------------------------------See You Soon-----------------------------------");
+    delay1(5.0);
+    exit(0);
 }
 #endif // GAME_LEADING_HEADER_H_INCLUDED

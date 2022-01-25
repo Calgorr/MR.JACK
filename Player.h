@@ -35,7 +35,7 @@ void player_assign()
         player[1].detective=0;
     }
     system("cls");
-    printf("Now We We Going To Tell Which Character Is Going To Be MR.JACK So The Detective Should Look Away For 8 Seconds\n");
+    printf("Now We Going To Tell Which Character Is Going To Be MR.JACK So The Detective Should Look Away For 8 Seconds\n");
     delay1(4.0);
     system("cls");
     printf("Here We Go\n");
@@ -59,7 +59,6 @@ int player_j_random()
         {
             if(j==i)
                 continue;
-            system("cls");
             strcpy(jack_pile[index],character[j].abrv);
             index++;
         }

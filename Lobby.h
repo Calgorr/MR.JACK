@@ -1,6 +1,7 @@
 #ifndef LOBBY_H_INCLUDED
 #define LOBBY_H_INCLUDED
 #include "Game_Leading_header.h"
+#include "bin_file_load.h"
 void setting();
 void print_menu();
 static int Color_counter;
@@ -30,13 +31,12 @@ void print_menu()
     switch (input)
     {
         case 1:
-            assign_character();
             assign_map_struct();
-            assign_node();
-            player_assign();
-            Round();
+            save();
             break;
         case 2:
+            load_file();
+            Round();
             break;
         case 3:
             setting();
@@ -89,10 +89,4 @@ void change_color(int Color_counter)
             system("Color 0B");
     }
 }
-/*void delay(float number_of_seconds)
-{
-    float milli_seconds = 1000 * number_of_seconds;
-    clock_t start_time = clock();
-    while (clock() < start_time + milli_seconds);
-}*/
 #endif // LOBBY_H_INCLUDED
