@@ -1,6 +1,10 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
-#include "Character.h"
+#include "Game_Leading_header.h"
+#include "Map.h"
+#include "Lobby.h"
+char jack_pile[7][4];
+int player_j_random();
 typedef struct
 {
     int jack;
@@ -9,28 +13,39 @@ typedef struct
     char player1[3];
 }Player;
 Player player[2];
+int jack;
 void player_assign()
 {
+    system("cls");
     printf("The First Player Is Going To Be : 1 For MR.JACK 2 For Detective\n");
-            int input;
-            scanf("%d",&input);
-            if(input==1)
-            {
-                player[0].jack=1;
-                player[0].detective=0;
-                player[1].jack=0;
-                player[1].detective=1;
-            }
-            else
-            {
-                player[0].jack=0;
-                player[0].detective=1;
-                player[1].jack=1;
-                player[1].detective=0;
-            }
+    int input;
+    scanf("%d",&input);
+    if(input==1)
+    {
+        player[0].jack=1;
+        player[0].detective=0;
+        player[1].jack=0;
+        player[1].detective=1;
+    }
+    else
+    {
+        player[0].jack=0;
+        player[0].detective=1;
+        player[1].jack=1;
+        player[1].detective=0;
+    }
+    system("cls");
+    printf("Now We We Going To Tell Which Character Is Going To Be MR.JACK So The Detective Should Look Away For 8 Seconds\n");
+    delay1(4.0);
+    system("cls");
+    printf("Here We Go\n");
+    jack=player_j_random();
+    printf("MR.JACK Is %s\n",player[jack].jack_name);
+    delay1(4.0);
+    system("cls");
 }
-char jack_pile[7][4];
-void player_j_random()
+
+int player_j_random()
 {
     system("cls");
     if(player[0].jack)
@@ -44,9 +59,11 @@ void player_j_random()
         {
             if(j==i)
                 continue;
-            strcpy(jack_pile[index],character[0].abrv[j]);
+            system("cls");
+            strcpy(jack_pile[index],character[j].abrv);
             index++;
         }
+        return 0;
     }
     else
     {
@@ -59,9 +76,10 @@ void player_j_random()
         {
             if(j==i)
                 continue;
-            strcpy(jack_pile[index],character[0].abrv[j]);
+            strcpy(jack_pile[index],character[j].abrv);
             index++;
         }
+        return 1;
     }
 }
 #endif // PLAYER_H_INCLUDED

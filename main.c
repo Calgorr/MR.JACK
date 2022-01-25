@@ -9,16 +9,10 @@
 #include "Map.h"
 #include "Linked_List.h"
 #include "Game_Functions.h"
+#include "Player.h"
 int main()
 {
-    //assign_map_struct();
-    /*print_map();
-    delay(5);
-    system("cls");
-    JS();
-    system("cls");
-    print_map();*/
-    JW();
+    Welcome();
     return 0;
 }
 

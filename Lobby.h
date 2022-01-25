@@ -1,13 +1,10 @@
 #ifndef LOBBY_H_INCLUDED
 #define LOBBY_H_INCLUDED
-#include "Character.h"
-#include "player.h"
-#include "Linked_List.h"
+#include "Game_Leading_header.h"
 void setting();
-void change_color();
-void delay(float number_of_seconds);
 void print_menu();
 static int Color_counter;
+void change_color(int Color_counter);
 void Welcome()
 {
     char str[1000]="Welcome To MR.JACK\nPress Enter To Continue\n";
@@ -16,7 +13,7 @@ void Welcome()
         printf("%c",str[i]);
         if(i<32||(i>53&&i<76))
             continue;
-        delay(0.07);
+        delay1(0.07);
     }
     gets(str);
     system("cls");
@@ -34,12 +31,10 @@ void print_menu()
     {
         case 1:
             assign_character();
-            //assign_map_struct();
-            //print_map();
+            assign_map_struct();
+            assign_node();
             player_assign();
-            player_j_random();
-            delay(2);
-            //assign_player();
+            Round();
             break;
         case 2:
             break;
@@ -94,10 +89,10 @@ void change_color(int Color_counter)
             system("Color 0B");
     }
 }
-void delay(float number_of_seconds)
+/*void delay(float number_of_seconds)
 {
     float milli_seconds = 1000 * number_of_seconds;
     clock_t start_time = clock();
     while (clock() < start_time + milli_seconds);
-}
+}*/
 #endif // LOBBY_H_INCLUDED

@@ -1,5 +1,11 @@
 #ifndef MAP_H_INCLUDED
 #define MAP_H_INCLUDED
+void delay1(float number_of_seconds)
+{
+    float milli_seconds = 1000 * number_of_seconds;
+    clock_t start_time = clock();
+    while (clock() < start_time + milli_seconds);
+}
 typedef struct
 {
     char sit[3];

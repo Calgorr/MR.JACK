@@ -16,7 +16,7 @@ void assign_character()
     character[0].ability=1;
     character[0].movement[0]=1;
     character[0].movement[1]=3;
-    strcpy(character[0].ability_s,"Sherlock Holmes secretly draws the first card from the alibi pile and places it face down in front of him");
+    strcpy(character[0].ability_s,"Sherlock Holmes secretly draws the first card from the alibi pile ,\nand places it face down in front of him");
     strcpy(character[0].abrv,"SH");
     strcpy(character[1].name,"John H. Watson");
     character[1].ability=1;
@@ -40,7 +40,7 @@ void assign_character()
     character[4].ability=4;
     character[4].movement[0]=1;
     character[4].movement[1]=4;
-    strcpy(character[4].ability_s,"During her movement, Miss Stealthy can cross any hex (building, gaslight, garden) but she must stop her movement on a street hex.");
+    strcpy(character[4].ability_s,"During her movement, Miss Stealthy can cross any hex ,\n(building, gaslight, garden) but she must stop her movement on a street hex.");
     strcpy(character[4].abrv,"MS");
     strcpy(character[5].name,"Sergeant Goodley");
     character[5].ability=2;
@@ -52,7 +52,7 @@ void assign_character()
     character[6].ability=2;
     character[6].movement[0]=1;
     character[6].movement[1]=3;
-    strcpy(character[6].ability_s,"Instead of moving normally William Gull, you can exchange this character’s location with the location of any other character.");
+    strcpy(character[6].ability_s,"Instead of moving normally William Gull,\nyou can exchange this character’s location with the location of any other character.");
     strcpy(character[6].abrv,"WG");
     strcpy(character[7].name,"Jeremy Bert");
     character[7].ability=2;

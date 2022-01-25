@@ -1,5 +1,6 @@
 #ifndef LINKED_LIST_H_INCLUDED
 #define LINKED_LIST_H_INCLUDED
+#include "Character.h"
 struct node * create_node(char name1[3],int movement1[2],char ability1_s[200]);
 void add_end(struct node * head,struct node * new_node);
 void delete_node(struct node** phead, char str[3]);
@@ -94,9 +95,8 @@ void delete_node(struct node** phead, char str[3])
         free(temp);
         return;
     }
-    while (temp != NULL && strcmp(temp->name,str))
+    while (strcmp(temp->next->name,str))
         temp = temp->next;
-
     temp->next=temp->next->next;
 }
 int check_array2(int arr[],int i)
@@ -111,7 +111,7 @@ void print_list(struct node * head)
     struct node * current=head;
     while(current!=NULL)
     {
-        printf("%s : 1)Move %d to %d houses , 2)%s\n",current->name,current->movement[0],current->movement[1],current->ability);
+        printf("%s : 1)Move %d To %d Houses , 2)%s\n",current->name,current->movement[0],current->movement[1],current->ability);
         current=current->next;
     }
 }
