@@ -32,6 +32,9 @@ void assign_node()
         }while(check_array(r,j));
         j++;
     }
+    system("cls");
+    for(int i=0;i<4;i++)
+        printf("%d\n",r[i]);
     head1=create_node(character[r[0]].abrv,character[r[0]].movement,character[r[0]].ability_s);
     for(int i=1;i<=3;i++)
     {
@@ -51,6 +54,9 @@ void assign_node()
         r2[counter1++]=range[i];
         i++;
     }
+    system("cls");
+    for(int j=0;j<4;j++)
+        printf("%d",r2[j]);
     head2=create_node(character[r2[0]].abrv,character[r2[0]].movement,character[r2[0]].ability_s);
     for(int i=1;i<=3;i++)
     {

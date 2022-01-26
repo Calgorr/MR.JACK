@@ -32,7 +32,14 @@ void print_menu()
     {
         case 1:
             assign_map_struct();
-            save();
+            assign_character();
+            assign_node();
+            system("cls");
+            print_list(head1);
+            printf("\n");
+            print_list(head2);
+            player_assign();
+            Round();
             break;
         case 2:
             load_file();

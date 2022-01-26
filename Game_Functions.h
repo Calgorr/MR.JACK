@@ -12,9 +12,9 @@ void map_exit(int t,int q);
 void check_arrest(int t,int q);
 int str_index(char str[3]);
 void find_character(char str[3],int *x,int *y);
+int check_cell(char str[4],int x,int y);
 int range[]={0,1,2,3,4,5,6,7};
 int JWx,JWy;
-int check_cell(char str[4],int x,int y);
 int arr[8][2]={{1,11},{6,2},{0,5},{2,0},{3,5},{4,12},{5,7},{8,7}};
 void JS()
 {
@@ -30,8 +30,34 @@ void JS()
         print_map();
         printf("\nWhich Light Would You Like To Turn Of ?\n");
         scanf("%s",LL);
+        while(LL[0]!='L')
+        {
+            if(LL[0]=='l')
+            {
+                printf("This Light Is Already Turned Of Please Enter A New One\n");
+                scanf("%s",LL);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",LL);
+            }
+        }
         printf("Which Light Would You Like To Turn On\n");
         scanf("%s",Ln);
+        while(Ln[0]!='l')
+        {
+            if(Ln[0]=='L')
+            {
+                printf("This Light Is Already Turned One Please Enter A New One\n");
+                scanf("%s",Ln);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",Ln);
+            }
+        }
         int x,y;
         find_character("JS",&x,&y);
         for(int i=0;i<9;i++)
@@ -53,92 +79,30 @@ void JS()
         printf("\nPlease Enter The Path That You Want To Go!But Be Careful About The Rules Of Crossing The Streets\n");
         char str[4];
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves");
-            scanf("%s",str);
-        }
-        system("cls");
         int t=x,q=y;
         while(check_cell(str,x,y))
-        {
             scanf("%s",str);
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
-        }
-        for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
+        move_character(&t,&q,str);
         check_arrest(t,q);
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
-    {
-        print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
-        int input;
-        scanf("%d",&input);
-        if(input)
-            tunnel(&t,&q);
-        strcpy(board[x][y].sit,"S");
-        strcpy(board[t][q].sit,"JS");
-    }
-    else
-    {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"JS");
-    }
-    if(is_in(x,y))
-    {
-        update_tunnel();
-    }
+        {
+            print_map();
+            printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
+            int input;
+            scanf("%d",&input);
+            if(input)
+                tunnel(&t,&q);
+            strcpy(board[x][y].sit,"S");
+            strcpy(board[t][q].sit,"JS");
+        }
+        else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"JS");
+        }
+        if(is_in(x,y))
+            update_tunnel();
         system("cls");
         print_map();
         delay1(5.0);
@@ -155,100 +119,65 @@ void JS()
         printf("\nPlease Enter The Path That You Want To Go!But Be Careful About The Rules Of Crossing The Streets\n");
         char str[4];
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves");
-            scanf("%s",str);
-        }
         system("cls");
         while(check_cell(str,x,y))
-        {
             scanf("%s",str);
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
-        }
         int t=x,q=y;
-        for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
+        move_character(&t,&q,str);
         check_arrest(t,q);
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
-    {
-        print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
-        int input;
-        scanf("%d",&input);
-        if(input)
-            tunnel(&t,&q);
-        strcpy(board[x][y].sit,"S");
-        strcpy(board[t][q].sit,"JS");
-    }
-    else
-    {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"JS");
-    }
-    if(is_in(x,y))
-    {
-        update_tunnel();
-    }
+        {
+            print_map();
+            printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
+            int input;
+            scanf("%d",&input);
+            if(input)
+                tunnel(&t,&q);
+            strcpy(board[x][y].sit,"S");
+            strcpy(board[t][q].sit,"JS");
+        }
+        else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"JS");
+        }
+        if(is_in(x,y))
+            update_tunnel();
         system("cls");
         print_map();
         printf("\nnow you can see the changes!");
         char LL[3],Ln[3];
         printf("\nwhich light would you like to turn of ?\n");
         scanf("%s",LL);
+        while(LL[0]!='L')
+        {
+            if(LL[0]=='l')
+            {
+                printf("This Light Is Already Turned Of Please Enter A New One\n");
+                scanf("%s",LL);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",LL);
+            }
+        }
         printf("which ligth would you like to turn on\n");
         scanf("%s",Ln);
+        while(Ln[0]!='l')
+        {
+            if(Ln[0]=='L')
+            {
+                printf("This Light Is Already Turned One Please Enter A New One\n");
+                scanf("%s",Ln);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again");
+                scanf("%s",Ln);
+            }
+        }
         for(int i=0;i<9;i++)
         {
             for(int j=0;j<13;j++)
@@ -275,76 +204,17 @@ void IL()
     find_character("IL",&x,&y);
     char str[4];
     scanf("%s",str);
-    while(strlen(str)<1||strlen(str)>3)
-    {
-        printf("1 to 3 moves\n");
-        scanf("%s",str);
-    }
     while(check_cell(str,x,y))
-    {
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves\n");
-            scanf("%s",str);
-        }
-    }
     system("cls");
     int t=x,q=y;
-    for(int i=0;i<strlen(str);i++)
-    {
-        if(str[i]=='A')
-            t--;
-        else if(str[i]=='D')
-            t++;
-        else if(str[i]=='W')
-        {
-            if(q%2)
-            {
-                t--;
-                q++;
-            }
-            else
-                q++;
-
-        }
-        else if(str[i]=='E')
-        {
-            if(q%2)
-                q++;
-            else
-            {
-                q++;
-                t++;
-            }
-        }
-        else if(str[i]=='Z')
-        {
-            if(q%2)
-            {
-                t--;
-                q--;
-            }
-            else
-                q--;
-        }
-        else if(str[i]=='X')
-        {
-            if(q%2)
-                q--;
-            else
-            {
-                q--;
-                t++;
-            }
-        }
-    }
+    move_character(&t,&q,str);
     check_arrest(t,q);
     map_exit(t,q);
     if(board[t][q].sit[0]=='T')
     {
         print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
+        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
         scanf("%d",&input);
         if(input)
@@ -354,20 +224,44 @@ void IL()
     }
     else
     {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"IL");
+        strcpy(board[x][y].sit,board[t][q].sit);
+        strcpy(board[t][q].sit,"IL");
     }
     if(is_in(x,y))
-    {
         update_tunnel();
-    }
     system("cls");
     print_map();
     char N[3],n[3];
     printf("\nWhich One Of The Exits Would You Like To Block ?\n");
     scanf("%s",N);
+    while(N[0]!='N')
+    {
+        if(N[0]=='n')
+        {
+            printf("This Exit Is Already Blocked Please Enter A New One\n");
+            scanf("%s",N);
+        }
+        else
+        {
+            printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+            scanf("%s",N);
+        }
+    }
     printf("Which One Of The Exits Would You Like To Open\n");
     scanf("%s",n);
+    while(n[0]!='n')
+    {
+        if(n[0]=='N')
+        {
+            printf("This Exit Is Already Open Please Enter A New One\n");
+            scanf("%s",n);
+        }
+        else
+        {
+            printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+            scanf("%s",n);
+        }
+    }
     for(int i=0;i<9;i++)
     {
         for(int j=0;j<13;j++)
@@ -393,11 +287,6 @@ void MS()
     printf(" But You Can Only Stop On The Street\n");
     char str[5];
     scanf("%s",str);
-    while(strlen(str)<1||strlen(str)>4)
-    {
-        printf("1 to 4 moves\n");
-        scanf("%s",str);
-    }
     for(int i=0;i<strlen(str);i++)
     {
         if(str[i]=='A')
@@ -453,7 +342,7 @@ void MS()
     if(board[t][q].sit[0]=='T')
     {
         print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
+        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
         scanf("%d",&input);
         if(input)
@@ -463,13 +352,11 @@ void MS()
     }
     else
     {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"MS");
+        strcpy(board[x][y].sit,board[t][q].sit);
+        strcpy(board[t][q].sit,"MS");
     }
     if(is_in(x,y))
-    {
         update_tunnel();
-    }
     print_map();
     printf("\nNow You Can See The Changes On The Map !!");
     delay1(5.0);
@@ -488,8 +375,34 @@ void JB()
         char TB[3],T[3];
         printf("\nWhich Tunnel Would You Like To Block ?\n");
         scanf("%s",T);
+        while(T[0]!='T')
+        {
+            if(T[0]=='t')
+            {
+                printf("This Tunnel Is Already Blocked Please Enter A New One\n");
+                scanf("%s",T);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",T);
+            }
+        }
         printf("Which Tunnel Would You Like To Open ?\n");
         scanf("%s",TB);
+        while(TB[0]!='t')
+        {
+            if(TB[0]=='T')
+            {
+                printf("This Tunnel Is Already Open Please Enter A New One\n");
+                scanf("%s",TB);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",TB);
+            }
+        }
         int x,y;
         find_character("JB",&x,&y);
         for(int i=0;i<9;i++)
@@ -555,98 +468,35 @@ void JB()
         printf("\nPlease Enter The Path That You Want To Go Through!But Be Careful About The Rules Of Crossing The Streets\n");
         char str[4];
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves");
-            scanf("%s",str);
-        }
         system("cls");
         int t=x,q=y;
         while(check_cell(str,x,y))
-        {
             scanf("%s",str);
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
-        }
-        for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
+        move_character(&t,&q,str);
         check_arrest(t,q);
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
-    {
-        print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
-        int input;
-        scanf("%d",&input);
-        if(input)
-            tunnel(&t,&q);
-        strcpy(board[x][y].sit,"S");
-        strcpy(board[t][q].sit,"JB");
-    }
-    else
-    {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"JB");
-    }
-    if(is_in(x,y))
-    {
-        update_tunnel();
-    }
+        {
+            print_map();
+            printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
+            int input;
+            scanf("%d",&input);
+            if(input)
+                tunnel(&t,&q);
+            strcpy(board[x][y].sit,"S");
+            strcpy(board[t][q].sit,"JB");
+        }
+        else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"JB");
+        }
+        if(is_in(x,y))
+            update_tunnel();
         system("cls");
         print_map();
         delay1(5.0);
     }
-
-
     else
     {
         system("cls");
@@ -656,92 +506,31 @@ void JB()
         char str[4];
         printf("\nPlease Enter The Path That You Want To Go Through!But Be Careful About The Rules Of Crossing The Streets\n");
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves");
-            scanf("%s",str);
-        }
         system("cls");
         while(check_cell(str,x,y))
-        {
             scanf("%s",str);
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
-        }
         int t=x,q=y;
-        for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
+        move_character(&t,&q,str);
         check_arrest(t,q);
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
-    {
-        print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
-        int input;
-        scanf("%d",&input);
-        if(input)
-            tunnel(&t,&q);
-        strcpy(board[x][y].sit,"S");
-        strcpy(board[t][q].sit,"JB");
-    }
-    else
-    {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"JB");
-    }
-    if(is_in(x,y))
-    {
-        update_tunnel();
-    }
+        {
+            print_map();
+            printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
+            int input;
+            scanf("%d",&input);
+            if(input)
+                tunnel(&t,&q);
+            strcpy(board[x][y].sit,"S");
+            strcpy(board[t][q].sit,"JB");
+        }
+        else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"JB");
+        }
+        if(is_in(x,y))
+            update_tunnel();
         system("cls");
         print_map();
         printf("\nNow You Can See the Changes!");
@@ -749,8 +538,34 @@ void JB()
         char T[3],TB[3];
         printf("\nWhich Tunnel Would You Like To Block ?\n");
         scanf("%s",T);
+        while(T[0]!='T')
+        {
+            if(T[0]=='t')
+            {
+                printf("This Tunnel Is Already Blocked Please Enter A New One\n");
+                scanf("%s",T);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",T);
+            }
+        }
         printf("Which Tunnel Would You Like To Open ?\n");
         scanf("%s",TB);
+        while(TB[0]!='t')
+        {
+            if(TB[0]=='T')
+            {
+                printf("This Tunnel Is Already Open Please Enter A New One\n");
+                scanf("%s",TB);
+            }
+            else
+            {
+                printf("It Seems That You Haven't Been Careful Enough Try Again\n");
+                scanf("%s",TB);
+            }
+        }
         find_character("JB",&x,&y);
         for(int i=0;i<9;i++)
         {
@@ -856,92 +671,31 @@ void WG()
         print_map();
         printf("\nPlease Enter The Path That You Want To Go Through\n");
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves");
-            scanf("%s",str);
-        }
         system("cls");
         while(check_cell(str,x,y))
-        {
             scanf("%s",str);
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
-        }
         int t=x,q=y;
-        for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
+        move_character(&t,&q,str);
         check_arrest(t,q);
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
-    {
-        print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
-        int input;
-        scanf("%d",&input);
-        if(input)
-            tunnel(&t,&q);
-        strcpy(board[x][y].sit,"S");
-        strcpy(board[t][q].sit,"WG");
-    }
-    else
-    {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"WG");
-    }
-    if(is_in(x,y))
-    {
-        update_tunnel();
-    }
+        {
+            print_map();
+            printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
+            int input;
+            scanf("%d",&input);
+            if(input)
+                tunnel(&t,&q);
+            strcpy(board[x][y].sit,"S");
+            strcpy(board[t][q].sit,"WG");
+        }
+        else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"WG");
+        }
+        if(is_in(x,y))
+            update_tunnel();
         system("cls");
         print_map();
         delay1(5.0);
@@ -957,74 +711,16 @@ void JW()
     print_map();
     printf("\nPlease Enter The Path You Want To Go Through\n");
     scanf("%s",str);
-    while(strlen(str)<1||strlen(str)>3)
-    {
-        printf("1 to 3 moves\n");
-        scanf("%s",str);
-    }
     while(check_cell(str,x,y))
-    {
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves\n");
-            scanf("%s",str);
-        }
-    }
     int t=x,q=y;
-    for(int i=0;i<strlen(str);i++)
-    {
-        if(str[i]=='A')
-            t--;
-        else if(str[i]=='D')
-            t++;
-        else if(str[i]=='W')
-        {
-            if(q%2)
-            {
-                t--;
-                q++;
-            }
-            else
-                q++;
-        }
-        else if(str[i]=='E')
-        {
-            if(q%2)
-                q++;
-            else
-            {
-                q++;
-                t++;
-            }
-        }
-        else if(str[i]=='Z')
-        {
-            if(q%2)
-            {
-                t--;
-                q--;
-            }
-            else
-                q--;
-        }
-        else if(str[i]=='X')
-        {
-            if(q%2)
-                q--;
-            else
-            {
-                q--;
-                t++;
-            }
-        }
-    }
+    move_character(&t,&q,str);
     check_arrest(t,q);
     map_exit(t,q);
     if(board[t][q].sit[0]=='T')
     {
         print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
+        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
         scanf("%d",&input);
         if(input)
@@ -1034,19 +730,19 @@ void JW()
     }
     else
     {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"JW");
+        strcpy(board[x][y].sit,board[t][q].sit);
+        strcpy(board[t][q].sit,"JW");
     }
     if(is_in(x,y))
-    {
         update_tunnel();
-    }
+    system("cls");
     print_map();
     printf("\nNow You Can See The Changes");
     delay1(5.0);
     system("cls");
     int direction;
-    printf("Now You Have To Set The Direction Of JW\nRemember That It Will Be Used At The End Of Every Round\n");
+    print_map();
+    printf("\nNow You Have To Set The Direction Of JW\nRemember That It Will Be Used At The End Of Every Round\n");
     scanf("%d",&direction);
     board[t][q].JW=direction;
 }
@@ -1056,13 +752,14 @@ void SG()
     find_character("JW",&x,&y);
     int input;
     print_map();
-    printf("Would You Like To Use Your Ability First Or Not? 1 For Yes 0 For No\n");
+    printf("\nWould You Like To Use Your Ability First Or Not? 1 For Yes 0 For No\n");
     scanf("%d",&input);
     system("cls");
     if(input)
     {
         int ccnt;
-        printf("How Many Character Would You Like To Use Your Ability on ?\n");
+        print_map();
+        printf("\nHow Many Character Would You Like To Use Your Ability on ?\n");
         scanf("%d",&ccnt);
         if(ccnt==1)
         {
@@ -1075,75 +772,15 @@ void SG()
             scanf("%s",str);
             find_character(name,&x1,&y1);
             int t1=x1,q1=y1;
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
             while(check_cell(str,x1,y1))
-            {
                 scanf("%s",str);
-                while(strlen(str)<1||strlen(str)>3)
-                {
-                    printf("\n1 to 3 moves\n");
-                    scanf("%s",str);
-                }
-            }
-            for(int i=0;i<strlen(str);i++)
-            {
-            if(str[i]=='A')
-                t1--;
-            else if(str[i]=='D')
-                t1++;
-            else if(str[i]=='W')
-            {
-                if(q1%2)
-                {
-                    t1--;
-                    q1++;
-                }
-                else
-                    q1++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q1%2)
-                    q1++;
-                else
-                {
-                    q1++;
-                    t1++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q1%2)
-                {
-                    t1--;
-                    q1--;
-                }
-                else
-                    q1--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q1%2)
-                    q1--;
-                else
-                {
-                    q1--;
-                    t1++;
-                }
-            }
-        }
-        strcpy(board[x1][y1].sit,board[t1][q1].sit);
-        strcpy(board[t1][q1].sit,name);
-        system("cls");
-        print_map();
-        printf("\n%s Has Been Moved\n",name);
-        delay1(5.0);
-        system("cls");
+            move_character(&t1,&q1,str);
+            strcpy(board[x1][y1].sit,board[t1][q1].sit);
+            strcpy(board[t1][q1].sit,name);
+            system("cls");
+            print_map();
+            printf("\n%s Has Been Moved\n",name);
+            delay1(5.0);
         }
         else if(ccnt==2)
         {
@@ -1164,21 +801,25 @@ void SG()
                 find_character(name[k],&x1,&y1);
                 int t1=x1,q1=y1;
                 if(!(a++))
+                {
+                    while(strlen(str[k])!=2)
                     {
-                        while(strlen(str[k])!=2)
-                        {
-                            printf("2 Moves Only\n");
-                            scanf("%s",str[k]);
-                        }
+                        system("cls");
+                        print_map();
+                        printf("\n2 Moves Only\n");
+                        scanf("%s",str[k]);
                     }
-                    else
+                }
+                else
+                {
+                    while(strlen(str[k])!=1)
                     {
-                        while(strlen(str[k])!=1)
-                        {
-                            printf("1 Move Only\n");
-                            scanf("%s",str[k]);
-                        }
+                        system("cls");
+                        print_map();
+                        printf("\n1 Move Only\n");
+                        scanf("%s",str[k]);
                     }
+                }
                 while(check_cell(str[k],x1,y1))
                 {
                     scanf("%s",str[k]);
@@ -1186,7 +827,9 @@ void SG()
                     {
                         while(strlen(str[k])!=2)
                         {
-                            printf("2 Moves Only\n");
+                            system("cls");
+                            print_map();
+                            printf("\n2 Moves Only\n");
                             scanf("%s",str[k]);
                         }
                     }
@@ -1194,67 +837,21 @@ void SG()
                     {
                         while(strlen(str[k])!=1)
                         {
-                            printf("1 Move Only\n");
+                            system("cls");
+                            print_map();
+                            printf("\n1 Move Only\n");
                             scanf("%s",str[k]);
                         }
                     }
 
                 }
-                for(int i=0;i<strlen(str[k]);i++)
-                {
-                    if(str[k][i]=='A')
-                        t1--;
-                    else if(str[k][i]=='D')
-                        t1++;
-                    else if(str[k][i]=='W')
-                    {
-                        if(q1%2)
-                        {
-                            t1--;
-                            q1++;
-                        }
-                        else
-                            q1++;
-
-                    }
-                    else if(str[k][i]=='E')
-                    {
-                        if(q1%2)
-                            q1++;
-                        else
-                        {
-                            q1++;
-                            t1++;
-                        }
-                    }
-                    else if(str[k][i]=='Z')
-                    {
-                        if(q1%2)
-                        {
-                            t1--;
-                            q1--;
-                        }
-                        else
-                            q1--;
-                    }
-                    else if(str[k][i]=='X')
-                    {
-                        if(q1%2)
-                            q1--;
-                        else
-                        {
-                            q1--;
-                            t1++;
-                        }
-                    }
-                }
+                move_character(&t1,&q1,str[k]);
                 strcpy(board[x1][y1].sit,board[t1][q1].sit);
                 strcpy(board[t1][q1].sit,name[k]);
         }
         system("cls");
         print_map();
         delay1(5.0);
-        system("cls");
 
     }
     else if(ccnt==3)
@@ -1276,7 +873,8 @@ void SG()
             int t1=x1,q1=y1;
             while(strlen(str[j])!=1)
             {
-                printf("\n1 move only\n");
+                print_map();
+                printf("\n1 Move Only\n");
                 scanf("%s",str[j]);
             }
             while(check_cell(str[j],x1,y1))
@@ -1284,61 +882,17 @@ void SG()
                 scanf("%s",str[j]);
                 while(strlen(str[j])!=1)
                 {
-                    printf("\n1 move only\n");
+                    print_map();
+                    printf("\n1 Move Only\n");
                     scanf("%s",str[j]);
                 }
 
             }
-            for(int i=0;i<strlen(str[j]);i++)
-            {
-                if(str[j][i]=='A')
-                    t1--;
-                else if(str[j][i]=='D')
-                    t1++;
-                else if(str[j][i]=='W')
-                {
-                    if(q1%2)
-                    {
-                        t1--;
-                        q1++;
-                    }
-                    else
-                        q1++;
-                    }
-            else if(str[j][i]=='E')
-                {
-                    if(q1%2)
-                        q1++;
-                    else
-                    {
-                        q1++;
-                    t1++;
-                    }
-                }
-                else if(str[j][i]=='Z')
-                {
-                    if(q1%2)
-                    {
-                            t1--;
-                        q1--;
-                    }
-                    else
-                        q1--;
-                }
-                else if(str[j][i]=='X')
-                {
-                    if(q1%2)
-                        q1--;
-                    else
-                    {
-                        q1--;
-                        t1++;
-                    }
-                }
-            }
-        strcpy(board[x1][y1].sit,board[t1][q1].sit);
-        strcpy(board[t1][q1].sit,name[j]);
+            move_character(&t1,&q1,str[j]);
+            strcpy(board[x1][y1].sit,board[t1][q1].sit);
+            strcpy(board[t1][q1].sit,name[j]);
         }
+        system("cls");
         print_map();
         delay1(5);
     }
@@ -1350,75 +904,16 @@ void SG()
     print_map();
     printf("\nPlease Enter The Path That You Want To Go Through\n");
     scanf("%s",str);
-    while(strlen(str)<1||strlen(str)>3)
-    {
-        printf("1 to 3 moves");
-        scanf("%s",str);
-    }
     system("cls");
     while(check_cell(str,x,y))
-    {
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves");
-            scanf("%s",str);
-        }
-    }
-    for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
-        check_arrest(t,q);
-        map_exit(t,q);
-        if(board[t][q].sit[0]=='T')
+    move_character(&t,&q,str);
+    check_arrest(t,q);
+    map_exit(t,q);
+    if(board[t][q].sit[0]=='T')
     {
         print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
+        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
         scanf("%d",&input);
         if(input)
@@ -1428,399 +923,189 @@ void SG()
     }
     else
     {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"SG");
+        strcpy(board[x][y].sit,board[t][q].sit);
+        strcpy(board[t][q].sit,"SG");
     }
     if(is_in(x,y))
-    {
         update_tunnel();
+    system("cls");
+    print_map();
+    delay1(5.0);
+    system("cls");
     }
+    else
+    {
+        system("cls");
+        int x,y;
+        find_character("SG",&x,&y);
+        int t=x,q=y;
+        char str[4];
+        print_map();
+        printf("\nPlease Enter The Path That You Want To Go Through\n");
+        scanf("%s",str);
+        system("cls");
+        while(check_cell(str,x,y))
+            scanf("%s",str);
+        move_character(&t,&q,str);
+        check_arrest(t,q);
+        map_exit(t,q);
+        if(board[t][q].sit[0]=='T')
+        {
+            print_map();
+            printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
+            int input;
+            scanf("%d",&input);
+            if(input)
+                tunnel(&t,&q);
+            strcpy(board[x][y].sit,"S");
+            strcpy(board[t][q].sit,"SG");
+        }
+        else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"SG");
+        }
+        if(is_in(x,y))
+            update_tunnel();
         system("cls");
         print_map();
         delay1(5.0);
         system("cls");
-    }
-        else
+        int ccnt;
+        printf("How Many Character Would You Like To Use Your Ability On ?\n");
+        scanf("%d",&ccnt);
+        if(ccnt==1)
         {
             system("cls");
-            int x,y;
-            find_character("SG",&x,&y);
-            int t=x,q=y;
-            char str[4];
-            print_map();
-            printf("\nPlease Enter The Path That You Want To Go Through\n");
-            scanf("%s",str);
-            while(strlen(str)<1||strlen(str)>3)
-            {
-                printf("1 to 3 moves");
-                scanf("%s",str);
-            }
-            system("cls");
-            while(check_cell(str,x,y))
-            {
-                scanf("%s",str);
-                while(strlen(str)<1||strlen(str)>3)
-                {
-                    printf("1 to 3 moves");
-                    scanf("%s",str);
-                }
-            }
-            for(int i=0;i<strlen(str);i++)
-                {
-                    if(str[i]=='A')
-                        t--;
-                    else if(str[i]=='D')
-                        t++;
-                    else if(str[i]=='W')
-                    {
-                        if(q%2)
-                        {
-                            t--;
-                            q++;
-                        }
-                        else
-                            q++;
-
-                    }
-                    else if(str[i]=='E')
-                    {
-                        if(q%2)
-                            q++;
-                        else
-                        {
-                            q++;
-                            t++;
-                        }
-                    }
-                    else if(str[i]=='Z')
-                    {
-                        if(q%2)
-                        {
-                            t--;
-                            q--;
-                        }
-                        else
-                            q--;
-                    }
-                    else if(str[i]=='X')
-                    {
-                        if(q%2)
-                            q--;
-                        else
-                        {
-                            q--;
-                            t++;
-                        }
-                    }
-                }
-                check_arrest(t,q);
-                map_exit(t,q);
-                if(board[t][q].sit[0]=='T')
-    {
-        print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
-        int input;
-        scanf("%d",&input);
-        if(input)
-            tunnel(&t,&q);
-        strcpy(board[x][y].sit,"S");
-        strcpy(board[t][q].sit,"SG");
-    }
-    else
-    {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"SG");
-    }
-    if(is_in(x,y))
-    {
-        update_tunnel();
-    }
-                system("cls");
-                print_map();
-                delay1(5.0);
-                system("cls");
-                int ccnt;
-                printf("How Many Character Would You Like To Use Your Ability On ?\n");
-                scanf("%d",&ccnt);
-                if(ccnt==1)
-                {
-                    system("cls");
-                    print_map();
-                    int x1,y1;
-                    char str[4],name[4];
-                    printf("\nWhat Is The Chosen Name And The Path Of The Character ?\n");
-                    scanf("%s",name);
-                    scanf("%s",str);
-                    find_character(name,&x1,&y1);
-                    int t1=x1,q1=y1;
-                    while(strlen(str)<1||strlen(str)>3)
-                    {
-                        printf("1 to 3 moves");
-                        scanf("%s",str);
-                    }
-                    while(check_cell(str,x1,y1))
-                    {
-                        scanf("%s",str);
-                        while(strlen(str)<1||strlen(str)>3)
-                        {
-                            printf("\n1 to 3 moves\n");
-                            scanf("%s",str);
-                        }
-                    }
-                    for(int i=0;i<strlen(str);i++)
-                    {
-                    if(str[i]=='A')
-                        t1--;
-                    else if(str[i]=='D')
-                        t1++;
-                    else if(str[i]=='W')
-                    {
-                        if(q1%2)
-                        {
-                            t1--;
-                            q1++;
-                        }
-                        else
-                            q1++;
-
-                    }
-                    else if(str[i]=='E')
-                    {
-                        if(q1%2)
-                            q1++;
-                        else
-                        {
-                            q1++;
-                            t1++;
-                        }
-                    }
-                    else if(str[i]=='Z')
-                    {
-                        if(q1%2)
-                        {
-                            t1--;
-                            q1--;
-                        }
-                        else
-                            q1--;
-                    }
-                    else if(str[i]=='X')
-                    {
-                        if(q1%2)
-                            q1--;
-                        else
-                        {
-                            q1--;
-                            t1++;
-                        }
-                    }
-                }
-                strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                strcpy(board[t1][q1].sit,name);
-                system("cls");
-                print_map();
-                printf("\n%s Has Been Moved\n",name);
-                delay1(5.0);
-                system("cls");
-            }
-            else if(ccnt==2)
-            {
-                system("cls");
-                int a=0;
-                printf("First Please Enter The Name And The Path Of The Character That Is Going To Move Through 2 Hex\nAnd Then The One That Is Going To Move 1 Hex\n");
-                delay1(7.0);
-                system("cls");
-                for(int k=0;k<2;k++)
-                {
-                    print_map();
-                    int x1,y1;
-                    char str[2][4],name[2][4];
-                    printf("\nWhat Is The Chosen Path And The Name Of The Character ?\n");
-                    scanf("%s",name[k]);
-                    scanf("%s",str[k]);
-                    system("cls");
-                    find_character(name[k],&x1,&y1);
-                    int t1=x1,q1=y1;
-                    if(!(a++))
-                        {
-                            while(strlen(str[k])!=2)
-                            {
-                                printf("2 Moves Only\n");
-                                scanf("%s",str[k]);
-                            }
-                        }
-                        else
-                        {
-                            while(strlen(str[k])!=1)
-                            {
-                                printf("1 Move Only\n");
-                                scanf("%s",str[k]);
-                            }
-                        }
-                    while(check_cell(str[k],x1,y1))
-                    {
-                        scanf("%s",str[k]);
-                        if(!(a++))
-                        {
-                            while(strlen(str[k])!=2)
-                            {
-                                printf("2 Moves Only\n");
-                                scanf("%s",str[k]);
-                            }
-                        }
-                        else
-                        {
-                            while(strlen(str[k])!=1)
-                            {
-                                printf("1 Move Only\n");
-                                scanf("%s",str[k]);
-                            }
-                        }
-
-                    }
-                    for(int i=0;i<strlen(str[k]);i++)
-                    {
-                        if(str[k][i]=='A')
-                            t1--;
-                        else if(str[k][i]=='D')
-                            t1++;
-                        else if(str[k][i]=='W')
-                        {
-                            if(q1%2)
-                            {
-                                t1--;
-                                q1++;
-                            }
-                            else
-                                q1++;
-
-                        }
-                        else if(str[k][i]=='E')
-                        {
-                            if(q1%2)
-                                q1++;
-                            else
-                            {
-                                q1++;
-                                t1++;
-                            }
-                        }
-                        else if(str[k][i]=='Z')
-                        {
-                            if(q1%2)
-                            {
-                                t1--;
-                                q1--;
-                            }
-                            else
-                                q1--;
-                        }
-                        else if(str[k][i]=='X')
-                        {
-                            if(q1%2)
-                                q1--;
-                            else
-                            {
-                                q1--;
-                                t1++;
-                            }
-                        }
-                    }
-                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                    strcpy(board[t1][q1].sit,name[k]);
-            }
-            system("cls");
-            print_map();
-            delay1(5.0);
-            system("cls");
-
-        }
-         else if(ccnt==3)
-    {
-        system("cls");
-        printf("Please Enter The Name And The Path Of The 3 Characters That You Want To Move\n");
-        delay1(2.5);
-        system("cls");
-        for(int j=0;j<3;j++)
-        {
             print_map();
             int x1,y1;
-            char str[3][4],name[3][4];
-            printf("\nWhat Is The Name And The Chosen Path Of The Character ?\n");
-            scanf("%s",name[j]);
-            scanf("%s",str[j]);
-            system("cls");
-            find_character(name[j],&x1,&y1);
+            char str[4],name[4];
+            printf("\nWhat Is The Chosen Name And The Path Of The Character ?\n");
+            scanf("%s",name);
+            scanf("%s",str);
+            find_character(name,&x1,&y1);
             int t1=x1,q1=y1;
-            while(strlen(str[j])!=1)
+            while(check_cell(str,x1,y1))
+                scanf("%s",str);
+            move_character(&t1,&q1,str);
+            strcpy(board[x1][y1].sit,board[t1][q1].sit);
+            strcpy(board[t1][q1].sit,name);
+            system("cls");
+            print_map();
+            printf("\n%s Has Been Moved\n",name);
+            delay1(5.0);
+        }
+        else if(ccnt==2)
+        {
+            system("cls");
+            int a=0;
+            printf("First Please Enter The Name And The Path Of The Character That Is Going To Move Through 2 Hex\nAnd Then The One That Is Going To Move 1 Hex\n");
+            delay1(7.0);
+            system("cls");
+            for(int k=0;k<2;k++)
             {
-                printf("\n1 move only\n");
-                scanf("%s",str[j]);
+                print_map();
+                int x1,y1;
+                char str[2][4],name[2][4];
+                printf("\nWhat Is The Chosen Path And The Name Of The Character ?\n");
+                scanf("%s",name[k]);
+                scanf("%s",str[k]);
+                system("cls");
+                find_character(name[k],&x1,&y1);
+                int t1=x1,q1=y1;
+                if(!(a++))
+                {
+                    while(strlen(str[k])!=2)
+                    {
+                        system("cls");
+                        print_map();
+                        printf("\n2 Moves Only\n");
+                        scanf("%s",str[k]);
+                    }
+                }
+                else
+                {
+                    while(strlen(str[k])!=1)
+                    {
+                        system("cls");
+                        print_map();
+                        printf("\n1 Move Only\n");
+                        scanf("%s",str[k]);
+                    }
+                }
+                while(check_cell(str[k],x1,y1))
+                {
+                    scanf("%s",str[k]);
+                    if(!(a++))
+                    {
+                        while(strlen(str[k])!=2)
+                        {
+                            system("cls");
+                            print_map();
+                            printf("\n2 Moves Only\n");
+                            scanf("%s",str[k]);
+                        }
+                    }
+                    else
+                    {
+                        while(strlen(str[k])!=1)
+                        {
+                            system("cls");
+                            print_map();
+                            printf("\n1 Move Only\n");
+                            scanf("%s",str[k]);
+                        }
+                    }
+
+                }
+                move_character(&t1,&q1,str[k]);
+                strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                strcpy(board[t1][q1].sit,name[k]);
             }
-            while(check_cell(str[j],x1,y1))
+        }
+        else if(ccnt==3)
+        {
+            system("cls");
+            printf("Please Enter The Name And The Path Of The 3 Characters That You Want To Move\n");
+            delay1(2.5);
+            system("cls");
+            for(int j=0;j<3;j++)
             {
+                print_map();
+                int x1,y1;
+                char str[3][4],name[3][4];
+                printf("\nWhat Is The Name And The Chosen Path Of The Character ?\n");
+                scanf("%s",name[j]);
                 scanf("%s",str[j]);
+                system("cls");
+                find_character(name[j],&x1,&y1);
+                int t1=x1,q1=y1;
                 while(strlen(str[j])!=1)
                 {
-                    printf("\n1 move only\n");
+                    print_map();
+                    printf("\n1 Move Only\n");
                     scanf("%s",str[j]);
                 }
+                while(check_cell(str[j],x1,y1))
+                {
+                    scanf("%s",str[j]);
+                    while(strlen(str[j])!=1)
+                    {
+                        print_map();
+                        printf("\n1 Move Only\n");
+                        scanf("%s",str[j]);
+                    }
 
+                }
+                move_character(&t1,&q1,str[j]);
+                strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                strcpy(board[t1][q1].sit,name[j]);
             }
-            for(int i=0;i<strlen(str[j]);i++)
-            {
-                if(str[j][i]=='A')
-                    t1--;
-                else if(str[j][i]=='D')
-                    t1++;
-                else if(str[j][i]=='W')
-                {
-                    if(q1%2)
-                    {
-                        t1--;
-                        q1++;
-                    }
-                    else
-                        q1++;
-                    }
-            else if(str[j][i]=='E')
-                {
-                    if(q1%2)
-                        q1++;
-                    else
-                    {
-                        q1++;
-                    t1++;
-                    }
-                }
-                else if(str[j][i]=='Z')
-                {
-                    if(q1%2)
-                    {
-                            t1--;
-                        q1--;
-                    }
-                    else
-                        q1--;
-                }
-                else if(str[j][i]=='X')
-                {
-                    if(q1%2)
-                        q1--;
-                    else
-                    {
-                        q1--;
-                        t1++;
-                    }
-                }
-            }
-        strcpy(board[x1][y1].sit,board[t1][q1].sit);
-        strcpy(board[t1][q1].sit,name[j]);
+            system("cls");
+            print_map();
+            delay1(5);
         }
-        print_map();
-        delay1(5);
     }
-                }
 }
 void SH()
 {
@@ -1832,75 +1117,16 @@ void SH()
     printf("\nWhich Path Are You Going To Choose\n");
     char str[4];
     scanf("%s",str);
-    while(strlen(str)<1||strlen(str)>3)
-    {
-        printf("1 to 3 moves\n");
-        scanf("%s",str);
-    }
     system("cls");
     while(check_cell(str,x,y))
-    {
         scanf("%s",str);
-        while(strlen(str)<1||strlen(str)>3)
-        {
-            printf("1 to 3 moves\n");
-            scanf("%s",str);
-        }
-    }
-    for(int i=0;i<strlen(str);i++)
-        {
-            if(str[i]=='A')
-                t--;
-            else if(str[i]=='D')
-                t++;
-            else if(str[i]=='W')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q++;
-                }
-                else
-                    q++;
-
-            }
-            else if(str[i]=='E')
-            {
-                if(q%2)
-                    q++;
-                else
-                {
-                    q++;
-                    t++;
-                }
-            }
-            else if(str[i]=='Z')
-            {
-                if(q%2)
-                {
-                    t--;
-                    q--;
-                }
-                else
-                    q--;
-            }
-            else if(str[i]=='X')
-            {
-                if(q%2)
-                    q--;
-                else
-                {
-                    q--;
-                    t++;
-                }
-            }
-        }
-        check_arrest(t,q);
-        map_exit(t,q);
-        if(board[t][q].sit[0]=='T')
+    move_character(&t,&q,str);
+    check_arrest(t,q);
+    map_exit(t,q);
+    if(board[t][q].sit[0]=='T')
     {
         print_map();
-        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
+        printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
         scanf("%d",&input);
         if(input)
@@ -1910,23 +1136,28 @@ void SH()
     }
     else
     {
-    strcpy(board[x][y].sit,board[t][q].sit);
-    strcpy(board[t][q].sit,"SH");
+        strcpy(board[x][y].sit,board[t][q].sit);
+        strcpy(board[t][q].sit,"SH");
     }
     if(is_in(x,y))
-    {
         update_tunnel();
-    }
-        system("cls");
-        print_map();
-        printf("\nNow you Can See The Changes On The Map!!");
-        delay1(5.0);
-        system("cls");
-        delete_suspect();
-        delay1(5.0);
+    system("cls");
+    print_map();
+    printf("\nNow you Can See The Changes On The Map!!");
+    delay1(5.0);
+    system("cls");
+    delete_suspect();
+    delay1(5.0);
 }
 int check_cell(char str[4],int x,int y)
 {
+    while(strlen(str)>3)
+    {
+        system("cls");
+        print_map();
+        printf("\n1 To 3 Moves Only\n");
+        scanf("%s",str);
+    }
     int t=x,q=y;
     for(int i=0;i<strlen(str);i++)
         {
@@ -2246,6 +1477,8 @@ void hidden()
 void hidden_JW()
 {
     int J=board[JWx][JWy].JW;
+    system("cls");
+    printf("%d",J);
     if(J==1)
     {
         int x=JWx-1;
@@ -2518,5 +1751,56 @@ int is_in(int x,int y)
             return 1;
     }
     return 0;
+}
+void move_character(int *t,int *q,char str[4])
+{
+    for(int i=0;i<strlen(str);i++)
+        {
+            if(str[i]=='A')
+                (*t)--;
+            else if(str[i]=='D')
+                (*t)++;
+            else if(str[i]=='W')
+            {
+                if((*q)%2)
+                {
+                    (*t)--;
+                    (*q)++;
+                }
+                else
+                    (*q)++;
+
+            }
+            else if(str[i]=='E')
+            {
+                if((*q)%2)
+                    (*q)++;
+                else
+                {
+                    (*q)++;
+                    (*t)++;
+                }
+            }
+            else if(str[i]=='Z')
+            {
+                if((*q)%2)
+                {
+                    (*t)--;
+                    (*q)--;
+                }
+                else
+                    (*q)--;
+            }
+            else if(str[i]=='X')
+            {
+                if((*q)%2)
+                    (*q)--;
+                else
+                {
+                    (*q)--;
+                    (*t)++;
+                }
+            }
+        }
 }
 #endif // GAME_FUNCTIONS_H_INCLUDED

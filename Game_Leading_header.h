@@ -18,39 +18,23 @@ void Round()
         printf("MR.JACK Won!!");
         return;
     }
-    if((s==5||s==1)&&round1>1)
+    /*if((s==5||s==1)&&round1>1)
     {
         int input;
         printf("Would You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
         scanf("%d",&input);
         if(input)
             save();
-    }
+    }*/
     if((s++)<5)
     {
         system("cls");
         printf("------------------------ROUND %d------------------------\n",round1);
         delay1(8.0);
+        if(s==5)
+            round1++;
         assign_player1();
     }
-    if(s==5)
-        round1++;
-    else if((s++)<9)
-    {
-        system("cls");
-        printf("------------------------ROUND %d------------------------\n",round1);
-        delay1(8.0);
-        assign_player2();
-    }
-    if(s==9)
-        round1++;
-    s=1;
-    assign_node();
-    Round();
-}
-void assign_player1()
-{
-    system("cls");
     if(round1>1)
     {
         system("cls");
@@ -60,6 +44,7 @@ void assign_player1()
         scanf("%d",&input);
         if(input)
         {
+            hidden();
             system("cls");
             print_map();
             printf("\n");
@@ -67,6 +52,22 @@ void assign_player1()
         }
         system("cls");
     }
+    else if((s++)<9)
+    {
+        system("cls");
+        printf("------------------------ROUND %d------------------------\n",round1);
+        delay1(8.0);
+        if(s==9)
+            round1++;
+        assign_player2();
+    }
+    s=1;
+    assign_node();
+    Round();
+}
+void assign_player1()
+{
+    system("cls");
     print_map();
     if(cnt_fard%4==0||cnt_fard%4==3)
         printf("\nIt Is Detective's Turn\n");
@@ -243,12 +244,8 @@ void not_guilty()
     {
        for(int i=0;i<8;i++)
        {
-           if(!strcmp(player[jack].jack_name,character[i].abrv)||range[i]==-1)
-            {
-                if(!strcmp(player[jack].jack_name,character[i].abrv))
-                    range[i]=-1;
+           if(range[i]==-1)
                 continue;
-            }
            printf("%s Is Not Guilty\n",character[i].abrv);
        }
     }
@@ -261,7 +258,7 @@ void not_guilty()
             printf("%s Is Not Guilty\n",character[k].abrv);
         }
     }
-    delay1(15.0);
+    delay1(1500.0);
     system("cls");
 }
 void save()
