@@ -87,6 +87,7 @@ void JS()
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
         {
+            system("cls");
             print_map();
             printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
             int input;
@@ -128,6 +129,7 @@ void JS()
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
         {
+            system("cls");
             print_map();
             printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No");
             int input;
@@ -213,6 +215,7 @@ void IL()
     map_exit(t,q);
     if(board[t][q].sit[0]=='T')
     {
+        system("cls");
         print_map();
         printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
@@ -335,12 +338,13 @@ void MS()
             }
         }
     }
+    check_arrest(t,q);
     if(board[t][q].sit[0]!='S')
         MS();
     system("cls");
-    check_arrest(t,q);
     if(board[t][q].sit[0]=='T')
     {
+        system("cls");
         print_map();
         printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
@@ -477,6 +481,7 @@ void JB()
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
         {
+            system("cls");
             print_map();
             printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
             int input;
@@ -515,6 +520,7 @@ void JB()
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
         {
+            system("cls");
             print_map();
             printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
             int input;
@@ -680,6 +686,7 @@ void WG()
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
         {
+            system("cls");
             print_map();
             printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
             int input;
@@ -719,6 +726,7 @@ void JW()
     map_exit(t,q);
     if(board[t][q].sit[0]=='T')
     {
+        system("cls");
         print_map();
         printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
@@ -775,8 +783,18 @@ void SG()
             while(check_cell(str,x1,y1))
                 scanf("%s",str);
             move_character(&t1,&q1,str);
-            strcpy(board[x1][y1].sit,board[t1][q1].sit);
-            strcpy(board[t1][q1].sit,name);
+            if(board[t1][q1].sit[0]=='T')
+            {
+                strcpy(board[x1][y1].sit,"S");
+                strcpy(board[t1][q1].sit,name);
+            }
+            else
+            {
+                strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                strcpy(board[t1][q1].sit,name);
+            }
+            if(is_in(x1,y1))
+                update_tunnel();
             system("cls");
             print_map();
             printf("\n%s Has Been Moved\n",name);
@@ -791,6 +809,7 @@ void SG()
             system("cls");
             for(int k=0;k<2;k++)
             {
+                system("cls");
                 print_map();
                 int x1,y1;
                 char str[2][4],name[2][4];
@@ -846,14 +865,24 @@ void SG()
 
                 }
                 move_character(&t1,&q1,str[k]);
-                strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                strcpy(board[t1][q1].sit,name[k]);
-        }
-        system("cls");
-        print_map();
-        delay1(5.0);
+                if(board[t1][q1].sit[0]=='T')
+                {
+                    strcpy(board[x1][y1].sit,"S");
+                    strcpy(board[t1][q1].sit,name[k]);
+                }
+                else
+                {
+                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                    strcpy(board[t1][q1].sit,name[k]);
+                }
+                if(is_in(x1,y1))
+                    update_tunnel();
+            }
+            system("cls");
+            print_map();
+            delay1(5.0);
 
-    }
+        }
     else if(ccnt==3)
     {
         system("cls");
@@ -889,8 +918,18 @@ void SG()
 
             }
             move_character(&t1,&q1,str[j]);
-            strcpy(board[x1][y1].sit,board[t1][q1].sit);
-            strcpy(board[t1][q1].sit,name[j]);
+            if(board[t1][q1].sit[0]=='T')
+            {
+                strcpy(board[x1][y1].sit,"S");
+                strcpy(board[t1][q1].sit,name[j]);
+            }
+            else
+            {
+                strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                strcpy(board[t1][q1].sit,name[j]);
+            }
+            if(is_in(x1,y1))
+                update_tunnel();
         }
         system("cls");
         print_map();
@@ -912,6 +951,7 @@ void SG()
     map_exit(t,q);
     if(board[t][q].sit[0]=='T')
     {
+        system("cls");
         print_map();
         printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
@@ -951,6 +991,7 @@ void SG()
         map_exit(t,q);
         if(board[t][q].sit[0]=='T')
         {
+            system("cls");
             print_map();
             printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
             int input;
@@ -988,8 +1029,18 @@ void SG()
             while(check_cell(str,x1,y1))
                 scanf("%s",str);
             move_character(&t1,&q1,str);
-            strcpy(board[x1][y1].sit,board[t1][q1].sit);
-            strcpy(board[t1][q1].sit,name);
+            if(board[t1][q1].sit[0]=='T')
+            {
+                strcpy(board[x1][y1].sit,"S");
+                strcpy(board[t1][q1].sit,name);
+            }
+            else
+            {
+                strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                strcpy(board[t1][q1].sit,name);
+            }
+            if(is_in(x1,y1))
+                update_tunnel();
             system("cls");
             print_map();
             printf("\n%s Has Been Moved\n",name);
@@ -1004,6 +1055,7 @@ void SG()
             system("cls");
             for(int k=0;k<2;k++)
             {
+                system("cls");
                 print_map();
                 int x1,y1;
                 char str[2][4],name[2][4];
@@ -1059,9 +1111,23 @@ void SG()
 
                 }
                 move_character(&t1,&q1,str[k]);
-                strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                strcpy(board[t1][q1].sit,name[k]);
+                if(board[t1][q1].sit[0]=='T')
+                {
+                    strcpy(board[x1][y1].sit,"S");
+                    strcpy(board[t1][q1].sit,name[k]);
+                }
+                else
+                {
+                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                    strcpy(board[t1][q1].sit,name[k]);
+                }
+                if(is_in(x1,y1))
+                    update_tunnel();
             }
+            system("cls");
+            print_map();
+            delay1(5.0);
+
         }
         else if(ccnt==3)
         {
@@ -1098,8 +1164,18 @@ void SG()
 
                 }
                 move_character(&t1,&q1,str[j]);
-                strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                strcpy(board[t1][q1].sit,name[j]);
+                if(board[t1][q1].sit[0]=='T')
+                {
+                    strcpy(board[x1][y1].sit,"S");
+                    strcpy(board[t1][q1].sit,name[j]);
+                }
+                else
+                {
+                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                    strcpy(board[t1][q1].sit,name[j]);
+                }
+                if(is_in(x1,y1))
+                    update_tunnel();
             }
             system("cls");
             print_map();
@@ -1125,6 +1201,7 @@ void SH()
     map_exit(t,q);
     if(board[t][q].sit[0]=='T')
     {
+        system("cls");
         print_map();
         printf("\nYou Are On A Tunnel Would You Like To Use It ?1 For Yes 0 For No\n");
         int input;
@@ -1342,7 +1419,7 @@ void check_arrest(int t ,int q)
             else
             {
                 system("cls");
-                printf("MR.JACK won");
+                printf("MR.JACK Won");
                 exit(0);
             }
         }
@@ -1477,8 +1554,6 @@ void hidden()
 void hidden_JW()
 {
     int J=board[JWx][JWy].JW;
-    system("cls");
-    printf("%d",J);
     if(J==1)
     {
         int x=JWx-1;
@@ -1582,9 +1657,14 @@ void hidden_JW()
 }
 void tunnel(int *t,int *q)
 {
-    printf("please enter the other tunnel's name that you want to go through!!you shoud consider the fact that you can not get out of a blocked tunnel");
+    printf("Please Enter The Other Tunnel's Name That You Want To Go Through!!You Shoud Consider The Fact That You Can Not Get Out Of A Blocked Tunnel\n");
     char input[3];
     scanf("%s",input);
+    while(input[0]!='T')
+    {
+        printf("Invalid Input !!\n");
+        scanf("%s",input);
+    }
     for(int i=0;i<9;i++)
     {
         for(int j=0;j<13;j++)
@@ -1600,13 +1680,18 @@ void tunnel(int *t,int *q)
 }
 void map_exit(int t,int q)
 {
-    if(board[t][q].sit[0]=='N')
+    if(board[t][q].sit[0]=='N'&&jack_hidden())
     {
         system("cls");
         printf("MR.JACK Won");
         exit(0);
     }
-    return ;
+    else if(board[t][q].sit[0]=='N'&&!jack_hidden())
+    {
+        system("cls");
+        printf("I'm Afraid That You Have Left The City Without Being Hidden , So That Means That The Detective Saw You And He Won");
+        exit(0);
+    }
 }
 int str_index(char str[3])
 {

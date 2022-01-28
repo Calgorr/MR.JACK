@@ -52,7 +52,7 @@ void assign_character()
     character[6].ability=2;
     character[6].movement[0]=1;
     character[6].movement[1]=3;
-    strcpy(character[6].ability_s,"Instead of moving normally William Gull,\nyou can exchange this character’s location with the location of any other character.");
+    strcpy(character[6].ability_s,"Instead of moving normally William Gull,\nyou can exchange this character's location with the location of any other character.");
     strcpy(character[6].abrv,"WG");
     strcpy(character[7].name,"Jeremy Bert");
     character[7].ability=2;

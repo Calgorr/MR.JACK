@@ -35,8 +35,8 @@ void player_assign()
         player[1].detective=0;
     }
     system("cls");
-    printf("Now We Are Going To Tell Which Character Is Going To Be MR.JACK So The Detective Should Look Away For 8 Seconds\n");
-    //delay1(4.0);
+    printf("Now We Are Going To Tell Which Player Is Going To Be MR.JACK So The Detective Should Look Away For 8 Seconds\n");
+    delay1(4.0);
     system("cls");
     printf("Here We Go\n");
     jack=player_j_random();
@@ -54,7 +54,7 @@ int player_j_random()
         int i;
         srand(time(NULL));
         i=rand()%8;
-        strcpy(player[0].jack_name,character[i].name);
+        strcpy(player[0].jack_name,character[i].abrv);
         for(int j=0;j<8;j++)
         {
             if(j==i)
@@ -70,7 +70,7 @@ int player_j_random()
         int i;
         srand(time(NULL));
         i=rand()%8;
-        strcpy(player[1].jack_name,character[i].name);
+        strcpy(player[1].jack_name,character[i].abrv);
         for(int j=0;j<8;j++)
         {
             if(j==i)

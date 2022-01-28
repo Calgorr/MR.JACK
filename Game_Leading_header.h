@@ -3,13 +3,16 @@
 #include "Linked_List.h"
 #include "Character.h"
 #include "Game_Functions.h"
+void assign_player2();
+void assign_player1();
+void delete_lamp();
 void save();
 static int round1=1;
 static int cnt_fard;
 static int cnt_zoj;
-int s=1;
-void assign_player2();
-void assign_player1();
+int turn=1;
+int load;
+int flag_1;
 void Round()
 {
     if (round1>8)
@@ -18,25 +21,65 @@ void Round()
         printf("MR.JACK Won!!");
         return;
     }
-    /*if((s==5||s==1)&&round1>1)
+    if(!flag_1&&turn==5&&round1>1)
     {
         int input;
-        printf("Would You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
+        printf("\nWould You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
         scanf("%d",&input);
         if(input)
             save();
-    }*/
-    if((s++)<5)
+    }
+    if(turn<5)
     {
+        turn++;
         system("cls");
         printf("------------------------ROUND %d------------------------\n",round1);
-        delay1(8.0);
-        if(s==5)
+        delay1(6.0);
+        if(turn==5)
             round1++;
         assign_player1();
     }
-    if(round1>1)
+    if(turn==5&&round1>1)
     {
+        delete_lamp();
+        system("cls");
+        print_map();
+        printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
+        int input;
+        scanf("%d",&input);
+        if(input)
+        {
+            system("cls");
+            hidden();
+            system("cls");
+            print_map();
+            printf("\n");
+            not_guilty();
+        }
+        system("cls");
+    }
+    //yadet nare taqir bedi lamp ro vase save
+    if(turn<9)
+    {
+        turn++;
+        system("cls");
+        printf("------------------------ROUND %d------------------------\n",round1);
+        delay1(6.0);
+        if(turn==9)
+            round1++;
+        assign_player2();
+    }
+    if(!flag_1&&turn==9&&round1>1)
+    {
+        int input;
+        printf("\nWould You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
+        scanf("%d",&input);
+        if(input)
+            save();
+    }
+    if(turn==9&&round1>1)
+    {
+        delete_lamp();
         system("cls");
         print_map();
         printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
@@ -52,17 +95,9 @@ void Round()
         }
         system("cls");
     }
-    else if((s++)<9)
-    {
-        system("cls");
-        printf("------------------------ROUND %d------------------------\n",round1);
-        delay1(8.0);
-        if(s==9)
-            round1++;
-        assign_player2();
-    }
-    s=1;
+    turn=1;
     assign_node();
+    flag_1=0;
     Round();
 }
 void assign_player1()
@@ -147,27 +182,11 @@ void assign_player2()
 {
     system("cls");
     print_map();
-    if(round1>1)
-    {
-        system("cls");
-        print_map();
-        printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
-        int input;
-        scanf("%d",&input);
-        if(input)
-        {
-            system("cls");
-            print_map();
-            printf("\n");
-            not_guilty();
-        }
-        system("cls");
-    }
-    print_map();
     if(cnt_zoj%4==0||cnt_zoj%4==3)
         printf("\nMR.JACK Should Choose His Card First\n");
     else
         printf("\nThe Detective Should Choose His Card First\n");
+    printf("Please Enter The Character's Name That You Are Going To Take\nAccording To The Information Down Below\n");
     print_list(head2);
     char input[3];
     scanf("%s",input);
@@ -258,8 +277,32 @@ void not_guilty()
             printf("%s Is Not Guilty\n",character[k].abrv);
         }
     }
-    delay1(1500.0);
+    delay1(15.0);
     system("cls");
+}
+void delete_lamp()
+{
+    int flag=0;
+    for(int i=0;i<9;i++)
+    {
+        for(int j=0;j<13;j++)
+        {
+            if(!strcmp(board[i][j].sit,"L1"))
+                {strcpy(board[i][j].sit,"l3");flag++;break;}
+            if(!strcmp(board[i][j].sit,"L2"))
+                {strcpy(board[i][j].sit,"l4");flag++;break;}
+            if(!strcmp(board[i][j].sit,"L3"))
+                {strcpy(board[i][j].sit,"l5");flag++;break;}
+            if(!strcmp(board[i][j].sit,"L4"))
+                {strcpy(board[i][j].sit,"l6");flag++;break;}
+            if(!strcmp(board[i][j].sit,"L5"))
+                {strcpy(board[i][j].sit,"l7");flag++;break;}
+            if(!strcmp(board[i][j].sit,"L6"))
+                {strcpy(board[i][j].sit,"l8");flag++;break;}
+        }
+        if(flag)
+            break;
+    }
 }
 void save()
 {
@@ -267,9 +310,11 @@ void save()
     fpin=fopen("saved_game.bin","wb");
     fwrite(&round1,sizeof(int),1,fpin);
     fwrite(&jack,sizeof(int),1,fpin);
-    fwrite(&s,sizeof(int),1,fpin);
+    fwrite(&turn,sizeof(int),1,fpin);
     fwrite(&cnt_zoj,sizeof(int),1,fpin);
     fwrite(&cnt_fard,sizeof(int),1,fpin);
+    fwrite(&JWx,sizeof(int),1,fpin);
+    fwrite(&JWy,sizeof(int),1,fpin);
     for(int i=0;i<9;i++)
     {
         for(int j=0;j<13;j++)
