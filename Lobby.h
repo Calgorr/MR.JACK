@@ -2,6 +2,7 @@
 #define LOBBY_H_INCLUDED
 #include "Game_Leading_header.h"
 #include "bin_file_load.h"
+//the lobby header is set to control the menu
 void setting();
 void print_menu();
 void change_color(int Color_counter);
@@ -28,7 +29,11 @@ void print_menu()
     printf("4)Setings\n");
     printf("5)Quit\n");
     int input;
-    scanf("%d",&input);
+    while(scanf("%d",&input)!=1)
+    {
+        printf("Invalid Input Try Again\n");
+        fflush(stdin);
+    }
     switch (input)
     {
         case 1:
@@ -40,7 +45,6 @@ void print_menu()
             break;
         case 2:
             assign_character();
-            assign_node();
             load_file();
             break;
         case 3:{
@@ -84,7 +88,11 @@ void setting()
     printf("2)Change The Color\n");
     printf("3)Return Back to The Main Menu\n");
     int input;
-    scanf("%d",&input);
+    while(scanf("%d",&input)!=1)
+    {
+        printf("Invalid Input Try Again\n");
+        fflush(stdin);
+    }
     switch (input)
     {
         case 1:{

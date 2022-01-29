@@ -14,6 +14,7 @@ typedef struct
 }Player;
 Player player[2];
 int jack;
+int flag_2;
 void player_assign()
 {
     system("cls");
@@ -52,9 +53,12 @@ int player_j_random()
     {
         int index=0;
         int i;
-        srand(time(NULL));
-        i=rand()%8;
-        strcpy(player[0].jack_name,character[i].abrv);
+        if(!flag_2)
+        {
+            srand(time(NULL));
+            i=rand()%8;
+            strcpy(player[0].jack_name,character[i].abrv);
+        }
         for(int j=0;j<8;j++)
         {
             if(j==i)
@@ -66,11 +70,14 @@ int player_j_random()
     }
     else
     {
-        int index;
+        int index=0;
         int i;
-        srand(time(NULL));
-        i=rand()%8;
-        strcpy(player[1].jack_name,character[i].abrv);
+        if(!flag_2)
+        {
+            srand(time(NULL));
+            i=rand()%8;
+            strcpy(player[1].jack_name,character[i].abrv);
+        }
         for(int j=0;j<8;j++)
         {
             if(j==i)

@@ -12,6 +12,7 @@
 #include "Player.h"
 int main()
 {
-    Welcome();
+    assign_map_struct();
+    JS();
     return 0;
 }

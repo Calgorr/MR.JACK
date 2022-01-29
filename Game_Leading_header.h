@@ -3,15 +3,14 @@
 #include "Linked_List.h"
 #include "Character.h"
 #include "Game_Functions.h"
+//this header is mainly used to lead the whole game until the end
 void assign_player2();
 void assign_player1();
-void delete_lamp();
 void save();
 static int round1=1;
 static int cnt_fard;
 static int cnt_zoj;
 int turn=1;
-int load;
 int flag_1;
 void Round()
 {
@@ -23,8 +22,9 @@ void Round()
     }
     if(!flag_1&&turn==5&&round1>1)
     {
+        system("cls");
         int input;
-        printf("\nWould You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
+        printf("Would You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
         scanf("%d",&input);
         if(input)
             save();
@@ -41,7 +41,6 @@ void Round()
     }
     if(turn==5&&round1>1)
     {
-        delete_lamp();
         system("cls");
         print_map();
         printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
@@ -58,9 +57,9 @@ void Round()
         }
         system("cls");
     }
-    //yadet nare taqir bedi lamp ro vase save
     if(turn<9)
     {
+        system("cls");
         turn++;
         system("cls");
         printf("------------------------ROUND %d------------------------\n",round1);
@@ -72,14 +71,13 @@ void Round()
     if(!flag_1&&turn==9&&round1>1)
     {
         int input;
-        printf("\nWould You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
+        printf("Would You Like To Save The Game And Quit ?1 For Yes 0 For No\n");
         scanf("%d",&input);
         if(input)
             save();
     }
     if(turn==9&&round1>1)
     {
-        delete_lamp();
         system("cls");
         print_map();
         printf("\nWould You Like To See Who is Not Guilty ?1 For Yes 0 For No\n");
@@ -112,6 +110,12 @@ void assign_player1()
     print_list(head1);
     char input[3];
     scanf("%s",input);
+    while(str_index(input)==-1)
+    {
+        printf("Invalid Input Try Again\n");
+        scanf("%s",input);
+        system("cls");
+    }
     if(!strcmp(character[0].abrv,input))
     {
         system("cls");
@@ -190,6 +194,12 @@ void assign_player2()
     print_list(head2);
     char input[3];
     scanf("%s",input);
+    while(str_index(input)==-1)
+    {
+        printf("Invalid Input Try Again\n");
+        scanf("%s",input);
+        system("cls");
+    }
     if(!strcmp(character[0].abrv,input))
     {
         system("cls");
@@ -277,32 +287,8 @@ void not_guilty()
             printf("%s Is Not Guilty\n",character[k].abrv);
         }
     }
-    delay1(15.0);
+    delay1(1500.0);
     system("cls");
-}
-void delete_lamp()
-{
-    int flag=0;
-    for(int i=0;i<9;i++)
-    {
-        for(int j=0;j<13;j++)
-        {
-            if(!strcmp(board[i][j].sit,"L1"))
-                {strcpy(board[i][j].sit,"l3");flag++;break;}
-            if(!strcmp(board[i][j].sit,"L2"))
-                {strcpy(board[i][j].sit,"l4");flag++;break;}
-            if(!strcmp(board[i][j].sit,"L3"))
-                {strcpy(board[i][j].sit,"l5");flag++;break;}
-            if(!strcmp(board[i][j].sit,"L4"))
-                {strcpy(board[i][j].sit,"l6");flag++;break;}
-            if(!strcmp(board[i][j].sit,"L5"))
-                {strcpy(board[i][j].sit,"l7");flag++;break;}
-            if(!strcmp(board[i][j].sit,"L6"))
-                {strcpy(board[i][j].sit,"l8");flag++;break;}
-        }
-        if(flag)
-            break;
-    }
 }
 void save()
 {
@@ -315,10 +301,18 @@ void save()
     fwrite(&cnt_fard,sizeof(int),1,fpin);
     fwrite(&JWx,sizeof(int),1,fpin);
     fwrite(&JWy,sizeof(int),1,fpin);
+    fwrite(&player[jack].jack_name,sizeof(strlen(player[jack].jack_name)),1,fpin);
     for(int i=0;i<9;i++)
     {
         for(int j=0;j<13;j++)
             fwrite(&board[i][j],sizeof(board),1,fpin);
+    }
+    for(int i=0;i<8;i++)
+        fwrite(&range[i],sizeof(int),1,fpin);
+    if(!(round1%2))
+    {
+        for(int j=0;j<4;j++)
+            fwrite(&r2[j],sizeof(int),1,fpin);
     }
     system("cls");
     printf("-----------------------------------See You Soon-----------------------------------");

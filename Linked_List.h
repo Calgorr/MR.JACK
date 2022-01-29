@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_H_INCLUDED
 #define LINKED_LIST_H_INCLUDED
 #include "Character.h"
+//mainly for shuffling the cards
 struct node * create_node(char name1[3],int movement1[2],char ability1_s[200]);
 void add_end(struct node * head,struct node * new_node);
 void delete_node(struct node** phead, char str[3]);
@@ -9,7 +10,10 @@ int check_array(int arr[],int i);
 int check_array2(int arr[],int i);
 void print_list(struct node * head);
 struct node * head1;
-struct node * head2;;
+struct node * head2;
+int r[4];
+int r2[4];
+int flag_l;
 struct node
 {
     char name[3];
@@ -19,7 +23,6 @@ struct node
 };
 void assign_node()
 {
-    int r[4];
     srand(time(NULL));
     r[0]=rand()%8;
     int j=1;
@@ -40,16 +43,20 @@ void assign_node()
         add_end(head1,new_node);
     }
     int range[8]={0,1,2,3,4,5,6,7};
-    int r2[4];
+    if(!flag_l)
+        r2[0]=-1;
     int i=0,counter1=0;
-    while(1)
+    if(r2[0]==-1)
     {
-        if(counter1==4)
-            break;
-        while(check_array2(r,range[i]))
+        while(1)
+        {
+            if(counter1==4)
+                break;
+            while(check_array2(r,range[i]))
+                i++;
+            r2[counter1++]=range[i];
             i++;
-        r2[counter1++]=range[i];
-        i++;
+        }
     }
     head2=create_node(character[r2[0]].abrv,character[r2[0]].movement,character[r2[0]].ability_s);
     for(int i=1;i<=3;i++)
@@ -58,6 +65,7 @@ void assign_node()
         new_node=create_node(character[r2[i]].abrv,character[r2[i]].movement,character[r2[i]].ability_s);
         add_end(head2,new_node);
     }
+    flag_l=0;
 }
 int check_array(int arr[],int i)
 {

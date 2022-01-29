@@ -1,5 +1,6 @@
 #ifndef MAP_H_INCLUDED
 #define MAP_H_INCLUDED
+//the header that is used to print the map or to assign the main struct
 void delay1(float number_of_seconds)
 {
     float milli_seconds = 1000 * number_of_seconds;
@@ -12,33 +13,45 @@ typedef struct
     int JW;
 }cell;
 cell board[9][13];
-void assign_map_struct1();
-void assign_map_struct2();
+void assign_map_struct();
 void print_map();
 void multi_map()
 {
     system("cls");
-    printf("So We Have Two Maps That You Can Choose Based On Your Prefrences !!\n");
+    printf("So We Have Two Options That You Can Choose Based On Your Prefrences !! The Map Or A New Map ?\n");
     delay1(3.0);
-    assign_map_struct1();
-    print_map();
-    printf("\n--------------------------------------------------------------------------------------------\n--------------------------------------------------------------------------------------------\n");
-    assign_map_struct2();
+    assign_map_struct();
     print_map();
     printf("\nWhich One Would You Like To Go With ?First One Or The 2nd One\n");
     int input;
     scanf("%d",&input);
     if(input==1)
     {
-        assign_map_struct1();
         system("cls");
         return ;
     }
-    assign_map_struct2();
     system("cls");
+    printf("Remember That You Can Not Change The Tunnels In Any Way And You Delete Or Add Any Other Characters To The Game\n");
+    delay1(5.0);
+    system("cls");
+    for(int i=0;i<9;i++)
+    {
+        for(int j=0;j<13;j++)
+        {
+            print_map();
+            printf("\nPlease Enter The String That You Would Like To Be Saved In The Map For Index : %d-%d\n",i,j);
+            scanf("%s",board[i][j].sit);
+            system("cls");
+        }
+    }
+    printf("Is This Map Ok Or You Want To Do Something Else If Yes Enter 1 Otherwise 0\n");
+    int undo;
+    scanf("%d",&undo);
+    if(undo)
+        multi_map();
     return ;
 }
-void assign_map_struct1()
+void assign_map_struct()
 {
     FILE *fpin;
     fpin=fopen("Map_Code_1.txt","r");
@@ -55,23 +68,6 @@ void assign_map_struct1()
             board[i][j].JW=1;
     }
 
-}
-void assign_map_struct2()
-{
-    FILE *fpin;
-    fpin=fopen("Map_Code_2.txt","r");
-    int x,y;
-    char str[3]="";
-    for(int i=0;i<9*13;i++)
-    {
-        fscanf(fpin,"%d %d %s",&x,&y,str);
-        strcpy(board[x][y].sit,str);
-    }
-    for(int i=0;i<9;i++)
-    {
-        for(int j=0;j<13;j++)
-            board[i][j].JW=1;
-    }
 }
 void print_map()
 {

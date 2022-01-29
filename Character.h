@@ -10,6 +10,7 @@ typedef struct
 
 }Token;
 Token character[8];
+//saved my character's information here
 void assign_character()
 {
     strcpy(character[0].name,"Sherlock Holmes");

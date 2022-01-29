@@ -4,6 +4,7 @@
 #include "Lobby.h"
 int is_in(int x,int y);
 int jack_jw();
+void undo_char(char str[3],int x,int y,int t,int q);
 void tunnel();
 void update_tunnel();
 void hidden_JW();
@@ -13,11 +14,14 @@ void check_arrest(int t,int q);
 int str_index(char str[3]);
 void find_character(char str[3],int *x,int *y);
 int check_cell(char str[4],int x,int y);
-int range[]={0,1,2,3,4,5,6,7};
+int range[]={0,1,2,3,4,5,6,7};//I am using this array to show the not guilty ones
 int JWx,JWy;
+//the array down below is used for updating the tunnels
 int arr[8][2]={{1,11},{6,2},{0,5},{2,0},{3,5},{4,12},{5,7},{8,7}};
+//from this line to the 1230th line we are going to have the functions written for the characters in the game
 void JS()
 {
+    system("cls");
     int input;
     print_map();
     printf("\nWould You Like To Use Your Ability First Or Not? 1 For Yes 0 For No\n");
@@ -99,11 +103,39 @@ void JS()
         }
         else
         {
-            strcpy(board[x][y].sit,board[t][q].sit);
-            strcpy(board[t][q].sit,"JS");
+            if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"JS");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"JS");
+            }
         }
         if(is_in(x,y))
             update_tunnel();
+        system("cls");
+        print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            for(int i=0;i<9;i++)
+            {
+                for(int j=0;j<13;j++)
+                {
+                    if(!strcmp(board[i][j].sit,Ln))
+                        strcpy(board[i][j].sit,LL);
+                    else if(!strcmp(board[i][j].sit,LL))
+                       strcpy(board[i][j].sit,Ln);
+                }
+            }
+            undo_char("JS",x,y,t,q);
+            JS();
+        }
         system("cls");
         print_map();
         delay1(5.0);
@@ -141,16 +173,24 @@ void JS()
         }
         else
         {
-            strcpy(board[x][y].sit,board[t][q].sit);
-            strcpy(board[t][q].sit,"JS");
+            if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"JS");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"JS");
+            }
         }
         if(is_in(x,y))
             update_tunnel();
         system("cls");
         print_map();
-        printf("\nnow you can see the changes!");
+        printf("\nNow You Can See The Changes!");
         char LL[3],Ln[3];
-        printf("\nwhich light would you like to turn of ?\n");
+        printf("\nWhich Light Would You Like To Turn Of ?\n");
         scanf("%s",LL);
         while(LL[0]!='L')
         {
@@ -165,7 +205,7 @@ void JS()
                 scanf("%s",LL);
             }
         }
-        printf("which ligth would you like to turn on\n");
+        printf("Which Ligth Would You Like To Turn On\n");
         scanf("%s",Ln);
         while(Ln[0]!='l')
         {
@@ -189,6 +229,26 @@ void JS()
                 else if(!strcmp(board[i][j].sit,LL))
                    strcpy(board[i][j].sit,Ln);
             }
+        }
+        system("cls");
+        print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            for(int i=0;i<9;i++)
+            {
+                for(int j=0;j<13;j++)
+                {
+                    if(!strcmp(board[i][j].sit,Ln))
+                        strcpy(board[i][j].sit,LL);
+                    else if(!strcmp(board[i][j].sit,LL))
+                       strcpy(board[i][j].sit,Ln);
+                }
+            }
+            undo_char("JS",x,y,t,q);
+            JS();
         }
         system("cls");
         print_map();
@@ -227,8 +287,16 @@ void IL()
     }
     else
     {
-        strcpy(board[x][y].sit,board[t][q].sit);
-        strcpy(board[t][q].sit,"IL");
+        if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"IL");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"IL");
+            }
     }
     if(is_in(x,y))
         update_tunnel();
@@ -277,7 +345,28 @@ void IL()
     }
     system("cls");
     print_map();
+    int undo;
+    printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+    scanf("%d",&undo);
+    if(undo)
+    {
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<13;j++)
+            {
+                if(!strcmp(board[i][j].sit,n))
+                    strcpy(board[i][j].sit,N);
+                else if(!strcmp(board[i][j].sit,N))
+                    strcpy(board[i][j].sit,n);
+            }
+        }
+        undo_char("IL",x,y,t,q);
+        IL();
+    }
+    system("cls");
+    print_map();
     delay1(4.0);
+    system("cls");
 }
 void MS()
 {
@@ -356,17 +445,36 @@ void MS()
     }
     else
     {
-        strcpy(board[x][y].sit,board[t][q].sit);
-        strcpy(board[t][q].sit,"MS");
+        if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"MS");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"MS");
+            }
     }
     if(is_in(x,y))
         update_tunnel();
+    print_map();
+    int undo;
+    printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+    scanf("%d",&undo);
+    if(undo)
+    {
+        undo_char("MS",x,y,t,q);
+        MS();
+    }
+    system("cls");
     print_map();
     printf("\nNow You Can See The Changes On The Map !!");
     delay1(5.0);
 }
 void JB()
 {
+    system("cls");
     int input;
     print_map();
     printf("\nWould You Like To Use Your Ability First Or Not? 1 For Yes 0 For No\n");
@@ -493,11 +601,38 @@ void JB()
         }
         else
         {
-            strcpy(board[x][y].sit,board[t][q].sit);
-            strcpy(board[t][q].sit,"JB");
+            if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"JB");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"JB");
+            }
         }
         if(is_in(x,y))
             update_tunnel();
+        print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            for(int i=0;i<9;i++)
+            {
+                for(int j=0;j<13;j++)
+                {
+                    if(!strcmp(board[i][j].sit,TB))
+                        strcpy(board[i][j].sit,T);
+                    else if(!strcmp(board[i][j].sit,T))
+                        strcpy(board[i][j].sit,TB);
+                }
+            }
+            undo_char("JB",x,y,t,q);
+            JB();
+        }
         system("cls");
         print_map();
         delay1(5.0);
@@ -532,8 +667,16 @@ void JB()
         }
         else
         {
-            strcpy(board[x][y].sit,board[t][q].sit);
-            strcpy(board[t][q].sit,"JB");
+            if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"JB");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"JB");
+            }
         }
         if(is_in(x,y))
             update_tunnel();
@@ -572,7 +715,6 @@ void JB()
                 scanf("%s",TB);
             }
         }
-        find_character("JB",&x,&y);
         for(int i=0;i<9;i++)
         {
             for(int j=0;j<13;j++)
@@ -629,12 +771,33 @@ void JB()
         }
         system("cls");
         print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            for(int i=0;i<9;i++)
+            {
+                for(int j=0;j<13;j++)
+                {
+                    if(!strcmp(board[i][j].sit,TB))
+                        strcpy(board[i][j].sit,T);
+                    else if(!strcmp(board[i][j].sit,T))
+                        strcpy(board[i][j].sit,TB);
+                }
+            }
+            undo_char("JB",x,y,t,q);
+            JB();
+        }
+        system("cls");
+        print_map();
         delay1(5.0);
         system("cls");
     }
 }
 void WG()
 {
+    system("cls");
     int x,y;
     find_character("WG",&x,&y);
     int input;
@@ -665,6 +828,17 @@ void WG()
         }
         strcpy(board[x][y].sit,board[i][j].sit);
         strcpy(board[i][j].sit,"WG");
+        system("cls");
+        print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            strcpy(board[i][j].sit,board[x][y].sit);
+            strcpy(board[x][y].sit,"WG");
+            WG();
+        }
         system("cls");
         print_map();
         delay1(5.0);
@@ -698,11 +872,29 @@ void WG()
         }
         else
         {
-            strcpy(board[x][y].sit,board[t][q].sit);
-            strcpy(board[t][q].sit,"WG");
+            if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"WG");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"WG");
+            }
         }
         if(is_in(x,y))
             update_tunnel();
+        system("cls");
+        print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            undo_char("WG",x,y,t,q);
+            WG();
+        }
         system("cls");
         print_map();
         delay1(5.0);
@@ -710,6 +902,7 @@ void WG()
 }
 void JW()
 {
+    system("cls");
     int x,y;
     find_character("JW",&x,&y);
     JWx=x;
@@ -738,11 +931,29 @@ void JW()
     }
     else
     {
-        strcpy(board[x][y].sit,board[t][q].sit);
-        strcpy(board[t][q].sit,"JW");
+        if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"JW");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"JW");
+            }
     }
     if(is_in(x,y))
         update_tunnel();
+    system("cls");
+    print_map();
+    int undo;
+    printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+    scanf("%d",&undo);
+    if(undo)
+    {
+        undo_char("JW",x,y,t,q);
+        JW();
+    }
     system("cls");
     print_map();
     printf("\nNow You Can See The Changes");
@@ -757,7 +968,7 @@ void JW()
 void SG()
 {
     int x,y;
-    find_character("JW",&x,&y);
+    find_character("SG",&x,&y);
     int input;
     print_map();
     printf("\nWould You Like To Use Your Ability First Or Not? 1 For Yes 0 For No\n");
@@ -790,8 +1001,16 @@ void SG()
             }
             else
             {
-                strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                strcpy(board[t1][q1].sit,name);
+                if(board[t1][q1].sit[0]=='t')
+                {
+                    strcpy(board[x1][y1].sit,"S");
+                    strcpy(board[t1][q1].sit,name);
+                }
+                else
+                {
+                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                    strcpy(board[t1][q1].sit,name);
+                }
             }
             if(is_in(x1,y1))
                 update_tunnel();
@@ -872,8 +1091,16 @@ void SG()
                 }
                 else
                 {
-                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                    strcpy(board[t1][q1].sit,name[k]);
+                    if(board[t1][q1].sit[0]=='t')
+                    {
+                        strcpy(board[x1][y1].sit,"S");
+                        strcpy(board[t1][q1].sit,name[k]);
+                    }
+                    else
+                    {
+                        strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                        strcpy(board[t1][q1].sit,name[k]);
+                    }
                 }
                 if(is_in(x1,y1))
                     update_tunnel();
@@ -925,8 +1152,16 @@ void SG()
             }
             else
             {
-                strcpy(board[x1][y1].sit,board[t1][q1].sit);
-                strcpy(board[t1][q1].sit,name[j]);
+                if(board[t1][q1].sit[0]=='t')
+                {
+                    strcpy(board[x1][y1].sit,"S");
+                    strcpy(board[t1][q1].sit,name[j]);
+                }
+                    else
+                {
+                    strcpy(board[x1][y1].sit,board[t1][q1].sit);
+                    strcpy(board[t1][q1].sit,name[j]);
+                }
             }
             if(is_in(x1,y1))
                 update_tunnel();
@@ -963,11 +1198,29 @@ void SG()
     }
     else
     {
-        strcpy(board[x][y].sit,board[t][q].sit);
-        strcpy(board[t][q].sit,"SG");
+        if(board[t][q].sit[0]=='t')
+        {
+            strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"SG");
+        }
+            else
+        {
+            strcpy(board[x][y].sit,board[t][q].sit);
+            strcpy(board[t][q].sit,"SG");
+        }
     }
     if(is_in(x,y))
         update_tunnel();
+    system("cls");
+    print_map();
+    int undo;
+    printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+    scanf("%d",&undo);
+    if(undo)
+    {
+        undo_char("SG",x,y,t,q);
+        SG();
+    }
     system("cls");
     print_map();
     delay1(5.0);
@@ -1003,11 +1256,29 @@ void SG()
         }
         else
         {
-            strcpy(board[x][y].sit,board[t][q].sit);
-            strcpy(board[t][q].sit,"SG");
+            if(board[t][q].sit[0]=='t')
+            {
+                strcpy(board[x][y].sit,"S");
+                strcpy(board[t][q].sit,"SG");
+            }
+            else
+            {
+                strcpy(board[x][y].sit,board[t][q].sit);
+                strcpy(board[t][q].sit,"SG");
+            }
         }
         if(is_in(x,y))
             update_tunnel();
+        system("cls");
+        print_map();
+        int undo;
+        printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+        scanf("%d",&undo);
+        if(undo)
+        {
+            undo_char("SG",x,y,t,q);
+            SG();
+        }
         system("cls");
         print_map();
         delay1(5.0);
@@ -1220,12 +1491,23 @@ void SH()
         update_tunnel();
     system("cls");
     print_map();
+    int undo;
+    printf("\nWould You Like To Undo What you Just Did ? If Yes Enter 1 Otherwise 0\n");
+    scanf("%d",&undo);
+    if(undo)
+    {
+        undo_char("SH",x,y,t,q);
+        SH();
+    }
+    system("cls");
+    print_map();
     printf("\nNow you Can See The Changes On The Map!!");
     delay1(5.0);
     system("cls");
     delete_suspect();
     delay1(5.0);
 }
+//from now on we will set the logic of the game
 int check_cell(char str[4],int x,int y)
 {
     while(strlen(str)>3)
@@ -1401,10 +1683,12 @@ void delete_suspect()
     r=rand()%7;
     printf("Just The Person That Chose SH Should Look Now\n");
     delay1(5.0);
+    while(!strcmp(jack_pile[r],"NULL"))
+        r=rand()%7;
     printf("%s Deleted From Suspects List",jack_pile[r]);
     strcpy(jack_pile[r],"NULL");
 }
-void check_arrest(int t ,int q)
+void check_arrest(int t,int q)
 {
     for(int i=0;i<8;i++)
     {
@@ -1419,6 +1703,7 @@ void check_arrest(int t ,int q)
             else
             {
                 system("cls");
+
                 printf("MR.JACK Won");
                 exit(0);
             }
@@ -1442,30 +1727,30 @@ int jack_hidden()
             break;
     }
     flag=0;
-    if(board[i-1][j].sit[0]=='L'||(str_index(board[i-1][j].sit)>-1&&str_index(board[i-1][j].sit)<8))
+    if((i>0)&&(board[i-1][j].sit[0]=='L'||(str_index(board[i-1][j].sit)>-1&&str_index(board[i-1][j].sit)<8)))
         flag++;
-    else if(board[i+1][j].sit[0]=='L'||(str_index(board[i+1][j].sit)>-1&&str_index(board[i+1][j].sit)<8))
+    else if((i<8)&&(board[i+1][j].sit[0]=='L'||(str_index(board[i+1][j].sit)>-1&&str_index(board[i+1][j].sit)<8)))
         flag++;
     if(j%2)
     {
-        if(board[i-1][j+1].sit[0]=='L'||(str_index(board[i-1][j+1].sit)>-1&&str_index(board[i-1][j+1].sit)<8))
+        if((i>0&&j<12)&&(board[i-1][j+1].sit[0]=='L'||(str_index(board[i-1][j+1].sit)>-1&&str_index(board[i-1][j+1].sit)<8)))
             flag++;
-        if(board[i][j+1].sit[0]=='L'||(str_index(board[i][j+1].sit)>-1&&str_index(board[i][j+1].sit)<8))
+        if((j<12)&&(board[i][j+1].sit[0]=='L'||(str_index(board[i][j+1].sit)>-1&&str_index(board[i][j+1].sit)<8)))
             flag++;
-        if(board[i][j-1].sit[0]=='L'||(str_index(board[i][j-1].sit)>-1&&str_index(board[i][j-1].sit)<8))
+        if((j>0)&&(board[i][j-1].sit[0]=='L'||(str_index(board[i][j-1].sit)>-1&&str_index(board[i][j-1].sit)<8)))
             flag++;
-        if(board[i-1][j-1].sit[0]=='L'||(str_index(board[i-1][j-1].sit)>-1&&str_index(board[i-1][j-1].sit)<8))
+        if((i>0&&j>0)&&(board[i-1][j-1].sit[0]=='L'||(str_index(board[i-1][j-1].sit)>-1&&str_index(board[i-1][j-1].sit)<8)))
             flag++;
     }
     else
     {
-        if(board[i][j+1].sit[0]=='L'||(str_index(board[i][j+1].sit)>-1&&str_index(board[i][j+1].sit)<8))
+        if((j<12)&&(board[i][j+1].sit[0]=='L'||(str_index(board[i][j+1].sit)>-1&&str_index(board[i][j+1].sit)<8)))
             flag++;
-        if(board[i+1][j+1].sit[0]=='L'||(str_index(board[i+1][j+1].sit)>-1&&str_index(board[i+1][j+1].sit)<8))
+        if((i<8&&j<12)&&(board[i+1][j+1].sit[0]=='L'||(str_index(board[i+1][j+1].sit)>-1&&str_index(board[i+1][j+1].sit)<8)))
             flag++;
-        if(board[i+1][j-1].sit[0]=='L'||(str_index(board[i+1][j-1].sit)>-1&&str_index(board[i+1][j-1].sit)<8))
+        if((i<8&&j>0)&&(board[i+1][j-1].sit[0]=='L'||(str_index(board[i+1][j-1].sit)>-1&&str_index(board[i+1][j-1].sit)<8)))
             flag++;
-        if(board[i][j-1].sit[0]=='L'||(str_index(board[i][j-1].sit)>-1&&str_index(board[i][j-1].sit)<8))
+        if((j>0)&&(board[i][j-1].sit[0]=='L'||(str_index(board[i][j-1].sit)>-1&&str_index(board[i][j-1].sit)<8)))
             flag++;
     }
     if(flag)
@@ -1485,32 +1770,32 @@ void hidden()
             {
                 if(k%2)
                 {
-                    if(-1<str_index(board[j-1][k-1].sit)&&13>str_index(board[j-1][k-1].sit))
+                    if((j>0&&k>0)&&(-1<str_index(board[j-1][k-1].sit)&&13>str_index(board[j-1][k-1].sit)))
                         range[str_index(board[j-1][k-1].sit)]=-1;
-                    if(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit))
-                        range[str_index(board[j-1][1].sit)]=-1;
-                    if(-1<str_index(board[j-1][k+1].sit)&&13>str_index(board[j-1][k+1].sit))
+                    if((j>0)&&(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit)))
+                        range[str_index(board[j-1][k].sit)]=-1;
+                    if((j>0&&k<12)&&(-1<str_index(board[j-1][k+1].sit)&&13>str_index(board[j-1][k+1].sit)))
                         range[str_index(board[j-1][k+1].sit)]=-1;
-                    if(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit))
+                    if((k<12)&&(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit)))
                         range[str_index(board[j][k+1].sit)]=-1;
-                    if(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit))
+                    if((j<8)&&(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit)))
                         range[str_index(board[j+1][k].sit)]=-1;
-                    if(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit))
+                    if((k>0)&&(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit)))
                         range[str_index(board[j][k-1].sit)]=-1;
                 }
                 else
                 {
-                    if(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit))
+                    if((k>0)&&(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit)))
                         range[str_index(board[j][k-1].sit)]=-1;
-                    if(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit))
-                        range[str_index(board[j-1][1].sit)]=-1;
-                    if(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit))
+                    if((j>0)&&(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit)))
+                        range[str_index(board[j-1][k].sit)]=-1;
+                    if((k<12)&&(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit)))
                         range[str_index(board[j][k+1].sit)]=-1;
-                    if(-1<str_index(board[j+1][k+1].sit)&&13>str_index(board[j+1][k+1].sit))
+                    if((j<8&&k<12)&&(-1<str_index(board[j+1][k+1].sit)&&13>str_index(board[j+1][k+1].sit)))
                         range[str_index(board[j+1][k+1].sit)]=-1;
-                    if(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit))
+                    if((j<8&&k>0)&&(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit)))
                         range[str_index(board[j+1][k].sit)]=-1;
-                    if(-1<str_index(board[j+1][k-1].sit)&&13>str_index(board[j+1][k-1].sit))
+                    if((j<8&&k>0)&&(-1<str_index(board[j+1][k-1].sit)&&13>str_index(board[j+1][k-1].sit)))
                         range[str_index(board[j+1][k-1].sit)]=-1;
                 }
             }
@@ -1518,32 +1803,32 @@ void hidden()
             {
                 if(k%2)
                 {
-                    if(-1<str_index(board[j-1][k-1].sit)&&13>str_index(board[j-1][k-1].sit))
+                    if((j>0&&k>0)&&(-1<str_index(board[j-1][k-1].sit)&&13>str_index(board[j-1][k-1].sit)))
                         range[str_index(board[j-1][k-1].sit)]=-1;
-                    if(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit))
+                    if((j>0)&&(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit)))
                         range[str_index(board[j-1][k].sit)]=-1;
-                    if(-1<str_index(board[j-1][k+1].sit)&&13>str_index(board[j-1][k+1].sit))
+                    if((j>0&&k<12)&&(-1<str_index(board[j-1][k+1].sit)&&13>str_index(board[j-1][k+1].sit)))
                         range[str_index(board[j-1][k+1].sit)]=-1;
-                    if(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit))
+                    if((k<12)&&(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit)))
                         range[str_index(board[j][k+1].sit)]=-1;
-                    if(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit))
+                    if((j<8)&&(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit)))
                         range[str_index(board[j+1][k].sit)]=-1;
-                    if(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit))
+                    if((k>0)&&(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit)))
                         range[str_index(board[j][k-1].sit)]=-1;
                 }
                 else
                 {
-                    if(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit))
+                    if((k>0)&&(-1<str_index(board[j][k-1].sit)&&13>str_index(board[j][k-1].sit)))
                         range[str_index(board[j][k-1].sit)]=-1;
-                    if(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit))
+                    if((j>0)&&(-1<str_index(board[j-1][k].sit)&&13>str_index(board[j-1][k].sit)))
                         range[str_index(board[j-1][k].sit)]=-1;
-                    if(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit))
+                    if((k<12)&&(-1<str_index(board[j][k+1].sit)&&13>str_index(board[j][k+1].sit)))
                         range[str_index(board[j][k+1].sit)]=-1;
-                    if(-1<str_index(board[j+1][k+1].sit)&&13>str_index(board[j+1][k+1].sit))
-                        range[str_index(board[j=1][k+1].sit)]=-1;
-                    if(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit))
+                    if((j<8&&k<12)&&(-1<str_index(board[j+1][k+1].sit)&&13>str_index(board[j+1][k+1].sit)))
+                        range[str_index(board[j+1][k+1].sit)]=-1;
+                    if((j<8)&&(-1<str_index(board[j+1][k].sit)&&13>str_index(board[j+1][k].sit)))
                         range[str_index(board[j+1][k].sit)]=-1;
-                    if(-1<str_index(board[j+1][k-1].sit)&&13>str_index(board[j+1][k-1].sit))
+                    if((j<8&&k>0)&&(-1<str_index(board[j+1][k-1].sit)&&13>str_index(board[j+1][k-1].sit)))
                         range[str_index(board[j+1][k-1].sit)]=-1;
                 }
             }
@@ -1560,24 +1845,24 @@ void hidden_JW()
         while(x>-1)
         {
             if(!strcmp(board[x][JWy].sit,"SH")||!strcmp(board[x][JWy].sit,"JS")||!strcmp(board[x][JWy].sit,"IL")||!strcmp(board[x][JWy].sit,"MS")||!strcmp(board[x][JWy].sit,"SG")||!strcmp(board[x][JWy].sit,"WG")||!strcmp(board[x][JWy].sit,"JB"))
-                range[str_index(board[x][JWx].sit)]=-1;
+                range[str_index(board[x][JWy].sit)]=-1;
             x--;
         }
     }
     else if(J==4)
     {
         int x=JWx+1;
-        while(x<13)
+        while(x<9)
         {
             if(!strcmp(board[x][JWy].sit,"SH")||!strcmp(board[x][JWy].sit,"JS")||!strcmp(board[x][JWy].sit,"IL")||!strcmp(board[x][JWy].sit,"MS")||!strcmp(board[x][JWy].sit,"SG")||!strcmp(board[x][JWy].sit,"WG")||!strcmp(board[x][JWy].sit,"JB"))
-                range[str_index(board[x][JWx].sit)]=-1;
+                range[str_index(board[x][JWy].sit)]=-1;
             x++;
         }
     }
     else if(J==2)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
             if(q%2)
             {
@@ -1597,13 +1882,13 @@ void hidden_JW()
     else if(J==3)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
                 if(q%2)
                 {
-                    q++;
                     if(!strcmp(board[t][q].sit,"SH")||!strcmp(board[t][q].sit,"JS")||!strcmp(board[t][q].sit,"IL")||!strcmp(board[t][q].sit,"MS")||!strcmp(board[t][q].sit,"SG")||!strcmp(board[t][q].sit,"WG")||!strcmp(board[t][q].sit,"JB"))
                         range[str_index(board[t][q].sit)]=-1;
+                    q++;
                 }
                 else
                 {
@@ -1617,7 +1902,7 @@ void hidden_JW()
     else if(J==5)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
             if(q%2)
             {
@@ -1637,7 +1922,7 @@ void hidden_JW()
     else if(J==6)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
             if(q%2)
                 {
@@ -1677,6 +1962,7 @@ void tunnel(int *t,int *q)
             }
         }
     }
+    system("cls");
 }
 void map_exit(int t,int q)
 {
@@ -1720,7 +2006,7 @@ int jack_jw()
     else if(J==4)
     {
         int x=JWx+1;
-        while(x<13)
+        while(x<9)
         {
             if(!strcmp(board[x][JWy].sit,player[jack].jack_name))
                 flag++;
@@ -1730,7 +2016,7 @@ int jack_jw()
     else if(J==2)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
             if(q%2)
             {
@@ -1750,7 +2036,7 @@ int jack_jw()
     else if(J==3)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
                 if(q%2)
                 {
@@ -1770,7 +2056,7 @@ int jack_jw()
     else if(J==5)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
             if(q%2)
             {
@@ -1790,7 +2076,7 @@ int jack_jw()
     else if(J==6)
     {
         int t=JWx,q=JWy;
-        while(t>-1&&q<9&&q>-1&&q<13)
+        while(t>-1&&t<9&&q>-1&&q<13)
         {
             if(q%2)
                 {
@@ -1887,5 +2173,55 @@ void move_character(int *t,int *q,char str[4])
                 }
             }
         }
+}
+void undo_char(char str[3],int x,int y,int t,int q)
+{
+    if(is_in(t,q))
+    {
+        if(t==arr[0][0]&&q==arr[0][1])
+            {
+                strcpy(board[t][q].sit,"t1");
+                strcpy(board[x][y].sit,str);
+            }
+            else if(t==arr[1][0]&&q==arr[1][1])
+            {
+                strcpy(board[t][q].sit,"t2");
+                strcpy(board[x][y].sit,str);
+            }
+            else if(t==arr[2][0]&&q==arr[2][1])
+            {
+                strcpy(board[t][q].sit,"T1");
+                strcpy(board[x][y].sit,str);
+            }
+            else if(t==arr[3][0]&&q==arr[3][1])
+            {
+                strcpy(board[t][q].sit,"T2");
+                strcpy(board[x][y].sit,str);
+            }
+            else if(t==arr[4][0]&&q==arr[4][1])
+            {
+                strcpy(board[t][q].sit,"T3");
+                strcpy(board[x][y].sit,str);
+            }
+            else if(t==arr[5][0]&&q==arr[5][1])
+            {
+                strcpy(board[t][q].sit,"T4");
+                strcpy(board[x][y].sit,str);
+            }
+            else if(t==arr[6][0]&&q==arr[6][1])
+            {
+                strcpy(board[t][q].sit,"T5");
+                strcpy(board[x][y].sit,str);
+            }
+        }
+        else
+        {
+            strcpy(board[t][q].sit,board[x][y].sit);
+            strcpy(board[x][y].sit,str);
+        }
+        system("cls");
+        print_map();
+        printf("\nVOILA!!");
+        delay1(4.0);
 }
 #endif // GAME_FUNCTIONS_H_INCLUDED
